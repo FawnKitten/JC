@@ -17,10 +17,4 @@ public class CompoundStatement implements ASTNode {
     public void addStatement(ASTNode statement) { statements.add(statement); }
     public void addMultipleStatements(ArrayList<ASTNode> multipleStatements) {
         statements.addAll(multipleStatements); }
-
-    @Override
-    public Object accept(NodeVisitor visitor) {
-        visitor.visit(this);
-        return null;
-    }
 }

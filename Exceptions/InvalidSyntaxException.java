@@ -1,6 +1,5 @@
-import java.lang.Exception;
 
-public class InvalidSyntaxException extends Exception {
+public class InvalidSyntaxException extends ParserException {
 
     public InvalidSyntaxException(String message) {
         super(message);

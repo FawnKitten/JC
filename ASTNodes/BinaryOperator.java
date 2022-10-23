@@ -17,8 +17,4 @@ public class BinaryOperator implements ASTNode {
     public ASTNode getRight() { return right; }
     public void setRight(ASTNode node) { this.right = node; }
 
-    @Override
-    public Object accept(NodeVisitor visitor) {
-        return visitor.visit(this);
-    }
 }

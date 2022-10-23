@@ -9,14 +9,14 @@ public abstract class NodeVisitor {
     public ASTNode getTree() { return tree; }
     public void setTree(ASTNode tree) { this.tree = tree; }
 
-    public void eval() {
-        visit(tree);
+    public void eval()
+        throws InterpretException, SymbolException {
+        visit(getTree());
     }
 
-    public Object visit(ASTNode node) throws NullPointerException, ClassCastException {
-        if (node == null)
-            throw new NullPointerException("`node` is null");
-        else if (node instanceof BinaryOperator)
+    public Object visit(ASTNode node)
+        throws InterpretException, SymbolException {
+        if (node instanceof BinaryOperator)
             return visit((BinaryOperator) node);
         else if (node instanceof IntegerConstant)
             return visit((IntegerConstant) node);
@@ -39,28 +39,30 @@ public abstract class NodeVisitor {
             visit((VariableDeclaration) node);
             return null;
         } else
-            throw new ClassCastException("No valid cast for `node`");
+            throw new InvalidNodeTypeException("No valid cast for `node`");
     }
 
     public abstract LanguageType visit(BinaryOperator binop)
-            throws NullPointerException, ClassCastException;
+            throws InterpretException, SymbolException;
 
     public abstract LanguageType visit(IntegerConstant intconst);
 
     public abstract LanguageType visit(FloatConstant floatconst);
 
     public abstract LanguageType visit(UnaryOperator unpo)
-            throws NullPointerException, ClassCastException;
+            throws InterpretException, SymbolException;
 
     public abstract void visit(CompoundStatement comstat)
-            throws NullPointerException, ClassCastException;
+            throws InterpretException, SymbolException;
 
     public void visit(NoOp op) { }
 
     public abstract void visit(VariableAssignment varas)
-            throws NullPointerException, ClassCastException;
+            throws InterpretException, SymbolException;
 
-    public abstract LanguageType visit(VariableLookup varlo);
+    public abstract LanguageType visit(VariableLookup varlo)
+            throws SymbolException;
 
-    public abstract void visit(VariableDeclaration vardec);
+    public abstract void visit(VariableDeclaration vardec)
+        throws SymbolException;
 }

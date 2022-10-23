@@ -13,7 +13,4 @@ public class UnaryOperator implements ASTNode {
     public ASTNode getNode() { return node; }
     public void setNode(ASTNode node) { this.node = node; }
 
-    public Object accept(NodeVisitor visitor) {
-        return visitor.visit(this);
-    }
 }

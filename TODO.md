@@ -1,15 +1,13 @@
 
 TODO
-----
+====
 things that are to be done.
 
-Short-Term (things needed to make it compile)
-=============================================
-* don't let unitialized vars be rvalues
+Short-Term
+----------
 
-Features
-========
-
+Features to be added
+--------------------
 * identifiers
   * symbol table visitor
     * type lookup method
@@ -37,7 +35,7 @@ Features
   * check if assigned type is of array type
 
 FUTURE
-======
+------
 these are things that are to be implemented some time in the future,
 these are not stricly nessesary and may not be implemented at all
 

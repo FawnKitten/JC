@@ -9,7 +9,7 @@ public class PrintVisitor extends NodeVisitor {
 
     @Override
     public LanguageType visit(BinaryOperator binop)
-        throws NullPointerException, ClassCastException {
+        throws InterpretException, SymbolException {
         print("BinaryOperation<" + binop.getToken().getValue() + ">(");
         indentation++;
         visit(binop.getLeft());
@@ -34,7 +34,7 @@ public class PrintVisitor extends NodeVisitor {
 
     @Override
     public LanguageType visit(UnaryOperator unop)
-        throws NullPointerException, ClassCastException {
+        throws InterpretException, SymbolException {
         print("UnaryOperator<" + unop.getToken().getValue() + ">(");
         indentation++;
         visit(unop.getNode());
@@ -45,7 +45,7 @@ public class PrintVisitor extends NodeVisitor {
 
     @Override
     public void visit(CompoundStatement comstat)
-        throws NullPointerException, ClassCastException {
+        throws InterpretException, SymbolException {
         print("CompoundStatement(");
         indentation++;
         for (ASTNode statement: comstat.getStatements()) {
@@ -56,13 +56,13 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public void visit(NoOp op) throws NullPointerException, ClassCastException {
+    public void visit(NoOp op) {
         print("NoOp()");
     }
 
     @Override
     public void visit(VariableAssignment varas)
-        throws NullPointerException, ClassCastException {
+            throws InterpretException, SymbolException {
         print("VariableAssignment<" + varas.getToken().getValue() + ">(");
         indentation++;
         visit(varas.getValue());
@@ -71,14 +71,16 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(VariableLookup varlo) {
+    public LanguageType visit(VariableLookup varlo)
+            throws SymbolException{
         print("VariableLookup<" + varlo.getName() + ">()");
         return null;
     }
 
    @Override
-   public void visit(VariableDeclaration vardec) {
-       print("VariableDeclaration<" + vardec.getName().getValue()
+   public void visit(VariableDeclaration vardec)
+           throws SymbolException {
+       print("VariableDeclaration<" + vardec.getName()
                + ", " + vardec.getType().getValue() + ">()");
    }
 

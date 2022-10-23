@@ -1,15 +1,14 @@
 
 public class VariableLookup implements ASTNode {
-    private Token name;
+    private Token token;
 
-    public VariableLookup(Token name) {
-        this.name = name;
+    public VariableLookup(Token token) {
+        this.token = token;
     }
 
-    public Token getName() { return name; }
-    public void setName(Token name) { this.name = name; }
+    public String getName() { return token.getValue(); }
 
-    public Object accept(NodeVisitor visitor) {
-        return visitor.visit(this);
-    }
+    public Token getToken() { return token; }
+    public void setToken(Token token) { this.token = token; }
+
 }

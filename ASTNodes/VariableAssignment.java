@@ -16,8 +16,4 @@ public class VariableAssignment implements ASTNode {
     public ASTNode getValue() { return value; }
     public void setValue(ASTNode value) { this.value = value; }
 
-    public Object accept(NodeVisitor visitor) {
-        visitor.visit(this);
-        return null;
-    }
 }

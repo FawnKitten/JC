@@ -1,4 +1,4 @@
-public class InvalidCharacterException extends Exception {
+public class InvalidCharacterException extends ParserException {
     public InvalidCharacterException(String message) {
         super(message);
     }

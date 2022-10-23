@@ -2,12 +2,6 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static class Number {
-        float num;
-        public Number(float num) { this.num = num; }
-        public int add(int other_num) { return (int)num + other_num; }
-        public float add(float other_num) { return num + other_num; }
-    }
 
     public static void main(String[] args) {
         // Repl TODO: read code from file, and add repl option
@@ -24,8 +18,9 @@ public class Main {
             }
         } */
         Jc jc = new Jc(readFromFile("file.c"));
-        // jc.setVisitor(new PrintVisitor());
+        jc.setVisitor(new SymbolTableVisitor());
         jc.eval();
+        ((SymbolTableVisitor)jc.getVisitor()).dumpSymbolTable();
     }
 
     private static String readFromFile(String fileName) {

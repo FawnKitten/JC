@@ -1,21 +1,19 @@
 
 public class VariableDeclaration implements ASTNode {
-    private Token name;
     private Token type;
+    private Token token;
 
-    public VariableDeclaration(Token name, Token type) {
-        this.name = name;
+    public VariableDeclaration(Token token, Token type) {
+        this.token = token;
         this.type = type;
     }
 
-    public Token getName() { return name; }
-    public void setName(Token name) { this.name = name; }
+    public String getName() { return token.getValue(); }
 
     public Token getType() { return type; }
     public void setType(Token type) { this.type = type; }
 
-    public Object accept(NodeVisitor visitor) {
-        visitor.visit(this);
-        return null;
-    }
+    public Token getToken() { return token; }
+    public void setToken(Token token) { this.token = token; }
+
 }
