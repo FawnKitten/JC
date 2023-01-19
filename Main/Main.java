@@ -1,15 +1,21 @@
-import java.util.*;
-import java.io.*;
+package Main;
+
+import Visitors.SymbolTableVisitor;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Main {
 
+    @SuppressWarnings("CommentedOutCode")
     public static void main(String[] args) {
         // Repl TODO: read code from file, and add repl option
         /* Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
                 System.out.print("> ");
-                Jc jc = new Jc(scanner.nextLine());
+                Main.Jc jc = new Main.Jc(scanner.nextLine());
                 // jc.setVisitor(new PrintVisitor());
                 jc.eval();
             } catch (NoSuchElementException e) {

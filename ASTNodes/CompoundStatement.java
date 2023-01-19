@@ -1,3 +1,5 @@
+package ASTNodes;
+
 import java.util.ArrayList;
 
 public class CompoundStatement implements ASTNode {

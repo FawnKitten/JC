@@ -1,3 +1,9 @@
+package Visitors;
+
+import ASTNodes.*;
+import Exceptions.InterpretException;
+import Exceptions.SymbolException;
+import LanguageTypes.LanguageType;
 
 public class PrintVisitor extends NodeVisitor {
     private int indentation;

@@ -1,3 +1,8 @@
+package ASTNodes;
+
+
+import Main.Token;
+import Visitors.NodeVisitor;
 
 public class IntegerConstant implements ASTNode {
     private Token token;

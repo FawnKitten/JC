@@ -1,4 +1,10 @@
-import java.util.*;
+package Main;
+
+import ASTNodes.*;
+import Exceptions.InvalidCharacterException;
+import Exceptions.InvalidSyntaxException;
+
+import java.util.ArrayList;
 
 public class Parser {
     private Lexer lexer;
@@ -18,6 +24,7 @@ public class Parser {
     }
 
     private ASTNode block() {
+        // Parser.block() TODO: Implement block
         return null;
     }
 
@@ -44,7 +51,7 @@ public class Parser {
 
     private ArrayList<ASTNode> variable_declaration(Token type)
             throws InvalidSyntaxException, InvalidCharacterException {
-        // Parser TODO: add behaviour for initialization
+        // Main.Parser TODO: add behaviour for initialization
         ArrayList<ASTNode> vars = new ArrayList<ASTNode>();
         Token name = advanceToken(Token.Type.NAME);
         vars.add(new VariableDeclaration(name, type));
@@ -97,7 +104,7 @@ public class Parser {
         } else if (tok.getType() == Token.Type.NAME) {
             return new VariableLookup(tok);
         } else {
-            System.out.println("Parser::numericalFactor: " + tok.toString() + " not implemented");
+            System.out.println("Main.Parser::numericalFactor: " + tok.toString() + " not implemented");
             return null; // to be implemented
         }
     }
@@ -117,7 +124,7 @@ public class Parser {
     }
 
     private ASTNode statement() throws InvalidSyntaxException, InvalidCharacterException {
-        // Parser TODO: this could be a switch statement, for future refactor
+        // Main.Parser TODO: this could be a switch statement, for future refactor
         if (isOfType(currentToken, Token.Type.DASH, Token.Type.PLUS,
                 Token.Type.LEFT_PAREN, Token.Type.INT_CONST))
             return numericalExpression();

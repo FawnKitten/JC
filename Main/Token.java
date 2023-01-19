@@ -1,6 +1,7 @@
+package Main;
 
 public class Token {
-    public static enum Type {
+    public enum Type {
         NONE, INT_CONST, FLOAT_CONST, PLUS,
         DASH, SLASH, STAR, LEFT_PAREN,
         RIGHT_PAREN, LEFT_BRACKET, RIGHT_BRACKET,
@@ -28,7 +29,7 @@ public class Token {
     public String toString() {
         String type_name = type == null ? "null" : type.toString();
         String value_name = value == null ? "null" : value;
-        return "Token(" + value_name + ", " + type_name + ")";
+        return "Main.Token(" + value_name + ", " + type_name + ")";
     }
 }
 

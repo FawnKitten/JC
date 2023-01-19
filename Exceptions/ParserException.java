@@ -1,3 +1,5 @@
+package Exceptions;
+
 import java.lang.Exception;
 
 public class ParserException extends Exception {

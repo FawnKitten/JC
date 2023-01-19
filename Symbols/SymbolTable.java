@@ -1,3 +1,8 @@
+package Symbols;
+
+import Exceptions.RedeclaredSymbolException;
+import Exceptions.UndefinedSymbolException;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,5 +1,6 @@
+package LanguageTypes;
 
-class LanguageFloat implements LanguageType {
+public class LanguageFloat implements LanguageType {
     private float number;
     public float getNumber() { return number; }
 

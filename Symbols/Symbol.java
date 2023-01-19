@@ -1,4 +1,4 @@
-
+package Symbols;
 public abstract class Symbol {
 
     Symbol(String name) {

@@ -1,5 +1,6 @@
+package Symbols;
 
-class VariableSymbol extends Symbol {
+public class VariableSymbol extends Symbol {
 
     public VariableSymbol(String name, Symbol type) {
         super(name);

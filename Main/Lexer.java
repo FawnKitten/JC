@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package Main;
+
+import Exceptions.InvalidCharacterException;
 
 public class Lexer {
     private String text;
@@ -42,10 +44,10 @@ public class Lexer {
                 return new Token(")", Token.Type.RIGHT_PAREN);
             } /* else if (currentChar == '[') {
                 advanceCurrentChar();
-                return new Token("[", Token.Type.LEFT_BRACKET);
+                return new Main.Token("[", Main.Token.Type.LEFT_BRACKET);
             } else if (currentChar == ']') {
                 advanceCurrentChar();
-                return new Token("]", Token.Type.RIGHT_BRACKET);
+                return new Main.Token("]", Main.Token.Type.RIGHT_BRACKET);
             } */ else if (currentChar == '{') {
                 advanceCurrentChar();
                 return new Token("{", Token.Type.LEFT_CURLY);

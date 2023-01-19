@@ -1,10 +1,17 @@
-import java.util.HashMap;
-import java.util.Map;
-// import Exceptions.RedeclaredSymbolException;
-// import Exceptions.UndefinedSymbolException;
+package Visitors;
+
+import ASTNodes.*;
+import Exceptions.InterpretException;
+import Exceptions.RedeclaredSymbolException;
+import Exceptions.SymbolException;
+import LanguageTypes.LanguageType;
+import Symbols.Symbol;
+import Symbols.SymbolTable;
+import Symbols.TypeSymbol;
+import Symbols.VariableSymbol;
 
 public class SymbolTableVisitor extends NodeVisitor {
-    private SymbolTable symbolTable = new SymbolTable();
+    private final SymbolTable symbolTable = new SymbolTable();
 
     public void dumpSymbolTable() {
         System.out.println("Symbol Table Vistor contents:");

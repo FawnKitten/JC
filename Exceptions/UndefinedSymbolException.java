@@ -1,3 +1,4 @@
+package Exceptions;
 
 public class UndefinedSymbolException extends SymbolException {
     public UndefinedSymbolException(String message) {

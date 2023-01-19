@@ -1,3 +1,7 @@
+package ASTNodes;
+
+
+import Main.Token;
 
 public class VariableAssignment implements ASTNode {
     private Token token;

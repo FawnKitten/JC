@@ -1,3 +1,6 @@
+package ASTNodes;
+
+import Main.*;
 
 public class BinaryOperator implements ASTNode {
     private Token token;

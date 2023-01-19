@@ -1,5 +1,6 @@
+package LanguageTypes;
 
-class LanguageInteger implements LanguageType {
+public class LanguageInteger implements LanguageType {
     private int number;
     public int getNumber() { return number; }
 

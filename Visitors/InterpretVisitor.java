@@ -1,3 +1,8 @@
+package Visitors;
+
+import Exceptions.*;
+import LanguageTypes.*;
+import ASTNodes.*;
 import java.util.HashMap;
 
 public class InterpretVisitor extends NodeVisitor {
@@ -17,6 +22,7 @@ public class InterpretVisitor extends NodeVisitor {
         System.out.println("");
     }
 
+    @SuppressWarnings("CommentedOutCode")
     @Override
     public LanguageType visit(BinaryOperator binop)
             throws InterpretException, SymbolException {

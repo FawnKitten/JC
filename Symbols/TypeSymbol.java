@@ -1,7 +1,8 @@
+package Symbols;
 
-class TypeSymbol extends Symbol {
+public class TypeSymbol extends Symbol {
 
-    TypeSymbol(String name) {
+    public TypeSymbol(String name) {
         super(name);
     }
 

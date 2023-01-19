@@ -1,3 +1,7 @@
+package ASTNodes;
+
+
+import Main.Token;
 
 public class VariableDeclaration implements ASTNode {
     private Token type;

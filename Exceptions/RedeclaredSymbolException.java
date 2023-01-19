@@ -1,4 +1,4 @@
-import java.lang.Exception;
+package Exceptions;
 
 public class RedeclaredSymbolException extends SymbolException {
 

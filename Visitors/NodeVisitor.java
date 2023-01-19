@@ -1,3 +1,8 @@
+package Visitors;
+
+import Exceptions.*;
+import ASTNodes.*;
+import LanguageTypes.*;
 
 public abstract class NodeVisitor {
 

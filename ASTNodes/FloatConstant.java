@@ -1,3 +1,7 @@
+package ASTNodes;
+
+import Main.*;
+import Visitors.NodeVisitor;
 
 public class FloatConstant implements ASTNode {
     private Token token;
