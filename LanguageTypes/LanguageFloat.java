@@ -1,7 +1,7 @@
 package LanguageTypes;
 
 public class LanguageFloat implements LanguageType {
-    private float number;
+    private final float number;
     public float getNumber() { return number; }
 
     public LanguageFloat(float _number) { number = _number; }

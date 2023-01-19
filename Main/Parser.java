@@ -17,16 +17,15 @@ public class Parser {
 
     public ASTNode getTree() { return tree; }
 
-    public ASTNode generateTree() throws InvalidSyntaxException, InvalidCharacterException {
+    public void generateTree() throws InvalidSyntaxException, InvalidCharacterException {
         currentToken = lexer.consumeNextToken();
         tree = compoundStatements();
-        return tree;
     }
 
-    private ASTNode block() {
-        // Parser.block() TODO: Implement block
-        return null;
-    }
+//    private ASTNode block() {
+//        // Parser.block() TODO: Implement block
+//        return null;
+//    }
 
     private ASTNode assignemnt()
             throws InvalidSyntaxException, InvalidCharacterException {
@@ -104,7 +103,7 @@ public class Parser {
         } else if (tok.getType() == Token.Type.NAME) {
             return new VariableLookup(tok);
         } else {
-            System.out.println("Main.Parser::numericalFactor: " + tok.toString() + " not implemented");
+            System.out.println("Main.Parser::numericalFactor: " + tok + " not implemented");
             return null; // to be implemented
         }
     }

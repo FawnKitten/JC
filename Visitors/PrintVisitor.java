@@ -77,28 +77,26 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(VariableLookup varlo)
-            throws SymbolException{
+    public LanguageType visit(VariableLookup varlo) {
         print("VariableLookup<" + varlo.getName() + ">()");
         return null;
     }
 
    @Override
-   public void visit(VariableDeclaration vardec)
-           throws SymbolException {
+   public void visit(VariableDeclaration vardec) {
        print("VariableDeclaration<" + vardec.getName()
                + ", " + vardec.getType().getValue() + ">()");
    }
 
-    private String pad(int num, char chr) {
+    private String pad(int num) {
         String res = "";
         for(int i=0; i<num; i++) {
-            res += chr;
+            res += '-';
         }
         return res;
     }
 
     private void print(String message) {
-        System.out.println(pad(indentation, '-') + message);
+        System.out.println(pad(indentation) + message);
     }
 }

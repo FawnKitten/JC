@@ -10,9 +10,9 @@ public class SymbolTable {
 
     public enum Type {
         VARIABLE, TYPE
-    };
+    }
 
-    private HashMap<String, Symbol> symTab = new HashMap<>();
+    private final HashMap<String, Symbol> symTab = new HashMap<>();
 
     public void declare(Symbol symbol)
         throws RedeclaredSymbolException {

@@ -3,13 +3,13 @@ package Main;
 import Exceptions.InvalidCharacterException;
 
 public class Lexer {
-    private String text;
+    private final String text;
     private int pos;
     private Character currentChar;
 
     // for now return types are language keywords
     // TODO: add types to symbol table
-    private String[] keyWords = {
+    private final String[] keyWords = {
         "int", "void", "float"
     };
 
@@ -19,7 +19,9 @@ public class Lexer {
         this.currentChar = text.charAt(0);
     }
 
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Token consumeNextToken() throws InvalidCharacterException {
+        // Lexer.consumeNextToken TODO: remove main while since it does not loop
         while (currentChar != null) {
             skipSpace();
             if (Character.isDigit(currentChar)) {

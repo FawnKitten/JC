@@ -4,7 +4,7 @@ import Visitors.*;
 import Exceptions.*;
 
 public class Jc {
-    private Parser parser;
+    private final Parser parser;
     private NodeVisitor visitor;
 
     public Jc(String text) {

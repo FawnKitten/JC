@@ -6,7 +6,7 @@ import Main.Token;
 public class VariableAssignment implements ASTNode {
     private Token token;
     private ASTNode value;
-    private String name;
+    private final String name;
 
     public VariableAssignment(Token token, ASTNode value) {
         this.token = token;

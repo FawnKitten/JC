@@ -6,11 +6,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+@SuppressWarnings("SameParameterValue")
 public class Main {
 
     @SuppressWarnings("CommentedOutCode")
     public static void main(String[] args) {
-        // Repl TODO: read code from file, and add repl option
+        // Main.main TODO: read code from arbitrary file, and add repl option
         /* Scanner scanner = new Scanner(System.in);
         while (true) {
             try {

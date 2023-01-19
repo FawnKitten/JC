@@ -10,13 +10,13 @@ public class VariableSymbol extends Symbol {
 
     public enum State {
         INITIALIZED, ASSIGNED
-    };
+    }
 
     private State state;
     public void setState(State state) { this.state = state; }
     public State getState() { return state; }
 
-    private Symbol type;
+    private final Symbol type;
     public Symbol getType() { return type; }
 
     @Override

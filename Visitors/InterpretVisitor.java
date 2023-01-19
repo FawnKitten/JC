@@ -6,7 +6,7 @@ import ASTNodes.*;
 import java.util.HashMap;
 
 public class InterpretVisitor extends NodeVisitor {
-    private HashMap<String, LanguageType> variables = new HashMap<>();
+    final private HashMap<String, LanguageType> variables = new HashMap<>();
 
     public InterpretVisitor(ASTNode tree) { super(tree); }
 
@@ -95,15 +95,14 @@ public class InterpretVisitor extends NodeVisitor {
     @Override
     public LanguageType visit(VariableLookup varlo) {
         String name = varlo.getName();
-        LanguageType value = variables.get(name);
+        @SuppressWarnings("UnnecessaryLocalVariable") LanguageType value = variables.get(name);
         // System.out.println("*** " + name + " -> " + value.toString());
-        // for debuging purpouses uncomment
+        // for debugging purposes uncomment
         return value;
     }
 
     @Override
-    public void visit(VariableDeclaration vardec)
-            throws SymbolException {
+    public void visit(VariableDeclaration vardec) {
         String name = vardec.getName();
         // System.out.println("*** " + name + " := " + type);
         // for debuging purpouses uncomment

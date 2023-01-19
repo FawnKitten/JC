@@ -1,7 +1,7 @@
 package LanguageTypes;
 
 public class LanguageInteger implements LanguageType {
-    private int number;
+    private final int number;
     public int getNumber() { return number; }
 
     public LanguageInteger(int _number) { number = _number; }
