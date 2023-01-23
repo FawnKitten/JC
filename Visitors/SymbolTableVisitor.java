@@ -73,7 +73,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     @Override
     public void visit(VariableAssignment varas)
             throws InterpretException, SymbolException {
-        System.out.println("*** variable assined " + varas.getName());
+        System.out.println("*** variable assigned " + varas.getName());
         visit(varas.getValue());
     }
 

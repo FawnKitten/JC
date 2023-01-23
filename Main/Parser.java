@@ -142,6 +142,7 @@ public class Parser {
     private Token advanceToken(Token.Type... types)
             throws InvalidSyntaxException, InvalidCharacterException {
         Token tok = new Token(currentToken);
+        System.out.println(tok);
         if (isOfType(tok, types)) {
             currentToken = lexer.consumeNextToken();
             return tok;
