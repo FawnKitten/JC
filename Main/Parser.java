@@ -37,10 +37,10 @@ public class Parser {
 
     private ArrayList<ASTNode> declarations()
             throws InvalidSyntaxException, InvalidCharacterException {
-        ArrayList<ASTNode> vardecs = new ArrayList<ASTNode>();
+        ArrayList<ASTNode> vardecs = new ArrayList<>();
         while (currentToken.getType() == Token.Type.KEY_WORD) {
             Token type = advanceToken(Token.Type.KEY_WORD);
-            if (type.getValue() == "void")
+            if (type.getValue().equals("void"))
                 throw new InvalidSyntaxException("`void` is not a valid variable type");
             vardecs.addAll(variable_declaration(type));
             advanceToken(Token.Type.SEMI_COLON);
@@ -142,7 +142,6 @@ public class Parser {
     private Token advanceToken(Token.Type... types)
             throws InvalidSyntaxException, InvalidCharacterException {
         Token tok = new Token(currentToken);
-        System.out.println(tok);
         if (isOfType(tok, types)) {
             currentToken = lexer.consumeNextToken();
             return tok;

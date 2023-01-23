@@ -22,14 +22,13 @@ public class Lexer {
     public Token consumeNextToken() throws InvalidCharacterException {
         // Lexer.consumeNextToken TODO: remove main while since it does not loop
         while (currentChar != null) {
-            if (Character.isSpaceChar(currentChar)) {
+            if (Character.isSpaceChar(currentChar) || currentChar == '\n') {
                 skipSpace();
                 continue;
             }
             if (matchComment()) {
                 if (currentChar == '/' && peekChar() == '/') {
                     skipLineComment();
-                    System.out.println("[***] Line comment");
                 } else if (currentChar == '/' && peekChar() == '*') {
                     skipBlockComment();
                 }
@@ -90,7 +89,7 @@ public class Lexer {
     }
 
     private void skipBlockComment() {
-        while (currentChar != null && currentChar != '*' && peekChar() != '/')
+        while (currentChar != null && !(currentChar == '*' && peekChar() == '/'))
             advanceCurrentChar();
         // skip the '*' and the '/' characters
         advanceCurrentChar();
@@ -98,12 +97,8 @@ public class Lexer {
     }
 
     private void skipLineComment() {
-        StringBuilder comment = new StringBuilder();
-        while (currentChar != null && currentChar != '\n') {
-            comment.append(currentChar);
+        while (currentChar != null && currentChar != '\n')
             advanceCurrentChar();
-        }
-        System.out.println("[Lexer.skipLineComment] Line " + comment.toString());
     }
 
     public char peekChar() {
@@ -153,7 +148,7 @@ public class Lexer {
     }
 
     private void skipSpace() {
-        while (currentChar != null && Character.isWhitespace(currentChar))
+        while (currentChar != null && (Character.isWhitespace(currentChar) || currentChar == '\n'))
             advanceCurrentChar();
     }
 }

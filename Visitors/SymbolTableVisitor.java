@@ -14,7 +14,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     private final SymbolTable symbolTable = new SymbolTable();
 
     public void dumpSymbolTable() {
-        System.out.println("Symbol Table Vistor contents:");
+        System.out.println("Symbol Table Visitor contents:");
         System.out.println("=============================");
         symbolTable.dumpContents();
     }
@@ -35,7 +35,7 @@ public class SymbolTableVisitor extends NodeVisitor {
             symbolTable.declare(new TypeSymbol("float"));
         } catch (RedeclaredSymbolException e) {
             // Should not happen under any circumstances
-            // If this happens, the program should panic imediately
+            // If this happens, the program should panic immediately
             throw new RuntimeException("[SymbolTableVisitor.declareBuiltins] declaration called before the declaration of builtins");
         }
     }
@@ -73,14 +73,14 @@ public class SymbolTableVisitor extends NodeVisitor {
     @Override
     public void visit(VariableAssignment varas)
             throws InterpretException, SymbolException {
-        System.out.println("*** variable assigned " + varas.getName());
+        // System.out.println("*** variable assigned " + varas.getName());
         visit(varas.getValue());
     }
 
     @Override
     public LanguageType visit(VariableLookup varlo) throws SymbolException {
         String name = varlo.getName();
-        System.out.println("+++ variable looked up " + name);
+        // System.out.println("+++ variable looked up " + name);
         symbolTable.lookup(name);
         return null;
     }
@@ -88,7 +88,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     @Override
     public void visit(VariableDeclaration vardec)
             throws SymbolException {
-        System.out.println("--- variable declared " + vardec.getName());
+        // System.out.println("--- variable declared " + vardec.getName());
         Symbol type = symbolTable.lookup(vardec.getType().getValue());
         symbolTable.declare(new VariableSymbol(vardec.getName(), type));
     }

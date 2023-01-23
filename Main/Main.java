@@ -34,10 +34,10 @@ public class Main {
         try {
             File file = new File(fileName);
             Scanner fileReader = new Scanner(file);
-            String res = "";
+            StringBuilder res = new StringBuilder();
             while (fileReader.hasNextLine())
-                res += fileReader.nextLine();
-            return res;
+                res.append(fileReader.nextLine()).append('\n');
+            return res.toString();
         } catch (FileNotFoundException e) {
             System.out.println("Repl::readFromFile: " + fileName + " not found");
             return "";
