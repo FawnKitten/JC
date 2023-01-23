@@ -6,8 +6,4 @@ public class InvalidSyntaxException extends ParserException {
         super(message);
     }
 
-    public InvalidSyntaxException() {
-        super();
-    }
-
 }

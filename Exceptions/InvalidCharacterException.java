@@ -6,7 +6,4 @@ public class InvalidCharacterException extends ParserException {
         super(message);
     }
 
-    public InvalidCharacterException() {
-        super();
-    }
 }

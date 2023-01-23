@@ -89,11 +89,7 @@ public class PrintVisitor extends NodeVisitor {
    }
 
     private String pad(int num) {
-        String res = "";
-        for(int i=0; i<num; i++) {
-            res += '-';
-        }
-        return res;
+        return "-".repeat(Math.max(0, num));
     }
 
     private void print(String message) {

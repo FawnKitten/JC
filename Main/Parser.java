@@ -6,8 +6,9 @@ import Exceptions.InvalidSyntaxException;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("CommentedOutCode")
 public class Parser {
-    private Lexer lexer;
+    private final Lexer lexer;
     private Token currentToken;
     private ASTNode tree;
 
@@ -51,7 +52,7 @@ public class Parser {
     private ArrayList<ASTNode> variable_declaration(Token type)
             throws InvalidSyntaxException, InvalidCharacterException {
         // Main.Parser TODO: add behaviour for initialization
-        ArrayList<ASTNode> vars = new ArrayList<ASTNode>();
+        ArrayList<ASTNode> vars = new ArrayList<>();
         Token name = advanceToken(Token.Type.NAME);
         vars.add(new VariableDeclaration(name, type));
         while (currentToken.getType() == Token.Type.COMMA) {
@@ -135,10 +136,6 @@ public class Parser {
     }
 
 
-    public void setLexer(Lexer tf) {
-        this.lexer = tf;
-    }
-
     private Token advanceToken(Token.Type... types)
             throws InvalidSyntaxException, InvalidCharacterException {
         Token tok = new Token(currentToken);
@@ -146,9 +143,9 @@ public class Parser {
             currentToken = lexer.consumeNextToken();
             return tok;
         }
-        String errTypes = types[0].toString();
+        StringBuilder errTypes = new StringBuilder(types[0].toString());
         for (int i=1; i<types.length; i++)
-            errTypes += ", " + types[i].toString();
+            errTypes.append(", ").append(types[i].toString());
         throw new InvalidSyntaxException("expected type " + errTypes +
                 " but got type " + tok.getType());
     }

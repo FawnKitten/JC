@@ -1,11 +1,10 @@
 package ASTNodes;
 
-import Main.*;
-import Visitors.NodeVisitor;
+import Main.Token;
 
 public class FloatConstant implements ASTNode {
-    private Token token;
-    private float value;
+    private final Token token;
+    private final float value;
 
     public FloatConstant(Token token) {
         this.token = token;
@@ -13,11 +12,7 @@ public class FloatConstant implements ASTNode {
     }
 
     public Token getToken() { return token; }
-    public void setToken(Token token) { this.token = token; }
-    public float getValue() { return value; }
-    public void setValue(float value) { this.value = value; }
 
-    public Object accept(NodeVisitor visitor) {
-        return visitor.visit(this);
-    }
+    public float getValue() { return value; }
+
 }

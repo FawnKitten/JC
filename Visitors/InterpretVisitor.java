@@ -8,18 +8,14 @@ import java.util.HashMap;
 public class InterpretVisitor extends NodeVisitor {
     final private HashMap<String, LanguageType> variables = new HashMap<>();
 
-    public InterpretVisitor(ASTNode tree) { super(tree); }
-
     public InterpretVisitor() { super(); }
-
-    public HashMap<String, LanguageType> getVariables() { return variables; }
 
     @Override
     public void eval() throws InterpretException, SymbolException {
         visit(getTree());
         System.out.println("Variables:");
-        System.out.println(variables.toString());
-        System.out.println("");
+        System.out.println(variables);
+        System.out.println();
     }
 
     @SuppressWarnings("CommentedOutCode")
@@ -32,13 +28,13 @@ public class InterpretVisitor extends NodeVisitor {
         // this code is being kept anyway in case of bugs
         // if (left == null) {
         //     throw new NullPointerException(
-        //             "Uninitalized variable "
+        //             "Uninitialized variable "
         //             + ((VariableLookup)(binop.getLeft())).getName()
         //             + ".");
         //             // + "(had the value of"")");
         // } else if (right == null) {
         //     throw new NullPointerException(
-        //             "Uninitalized variable "
+        //             "Uninitialized variable "
         //             + ((VariableLookup)(binop.getRight())).getName()
         //             + ".");
         //             // + "(had the value of"")");

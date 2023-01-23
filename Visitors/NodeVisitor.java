@@ -60,7 +60,7 @@ public abstract class NodeVisitor {
     public abstract void visit(CompoundStatement comstat)
             throws InterpretException, SymbolException;
 
-    public void visit(NoOp op) { }
+    public void visit(@SuppressWarnings("unused") NoOp op) { }
 
     public abstract void visit(VariableAssignment varas)
             throws InterpretException, SymbolException;

@@ -6,8 +6,4 @@ public class InvalidNodeTypeException extends InterpretException {
         super(message);
     }
 
-    public InvalidNodeTypeException() {
-        super();
-    }
-
 }

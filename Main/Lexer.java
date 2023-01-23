@@ -112,7 +112,7 @@ public class Lexer {
             res.append(currentChar);
             advanceCurrentChar();
         }
-        if (currentChar != '.')
+        if (currentChar == null || currentChar != '.')
             return new Token(res.toString(), Token.Type.INT_CONST);
         else {
             res.append(currentChar);
@@ -131,6 +131,7 @@ public class Lexer {
             res.append(currentChar);
             advanceCurrentChar();
         }
+        //noinspection ForLoopReplaceableByForEach
         for (int i=0; i<keyWords.length; i++) {
             if (keyWords[i].equals(res.toString()))
                 return new Token(res.toString(), Token.Type.KEY_WORD);

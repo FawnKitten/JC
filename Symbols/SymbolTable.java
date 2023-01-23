@@ -37,7 +37,7 @@ public class SymbolTable {
 
     @Override
     public String toString() {
-        return "SymbolTable(" + symTab.toString() + ")";
+        return "SymbolTable(" + symTab + ")";
     }
 
 }
