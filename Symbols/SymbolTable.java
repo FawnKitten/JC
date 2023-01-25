@@ -30,6 +30,11 @@ public class SymbolTable {
         return symTab.get(symbolName);
     }
 
+    public void define(String symbolName) {
+        VariableSymbol variableSymbol = (VariableSymbol) symTab.get(symbolName);
+        variableSymbol.setState(VariableSymbol.State.INITIALIZED);
+    }
+
     public void dumpContents() {
         for (Map.Entry<String, Symbol> symbol : symTab.entrySet())
             System.out.println(symbol.getKey() + ": " + symbol.getValue());

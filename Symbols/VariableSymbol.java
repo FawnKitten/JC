@@ -2,22 +2,22 @@ package Symbols;
 
 public class VariableSymbol extends Symbol {
 
-    public VariableSymbol(String name, Symbol type) {
+    public VariableSymbol(String name, TypeSymbol type) {
         super(name);
-        this.state = State.INITIALIZED;
+        this.state = State.DECLARED;
         this.type = type;
     }
 
     public enum State {
-        INITIALIZED, ASSIGNED
+        DECLARED, INITIALIZED
     }
 
     private State state;
     public void setState(State state) { this.state = state; }
     public State getState() { return state; }
 
-    private final Symbol type;
-    public Symbol getType() { return type; }
+    private final TypeSymbol type;
+    public TypeSymbol getType() { return type; }
 
     @Override
     public String toString() {

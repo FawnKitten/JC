@@ -5,7 +5,6 @@ import Exceptions.InterpretException;
 import Exceptions.RedeclaredSymbolException;
 import Exceptions.SymbolException;
 import LanguageTypes.LanguageType;
-import Symbols.Symbol;
 import Symbols.SymbolTable;
 import Symbols.TypeSymbol;
 import Symbols.VariableSymbol;
@@ -74,6 +73,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     public void visit(VariableAssignment varas)
             throws InterpretException, SymbolException {
         // System.out.println("*** variable assigned " + varas.getName());
+        symbolTable.define(varas.getName());
         visit(varas.getValue());
     }
 
@@ -81,7 +81,9 @@ public class SymbolTableVisitor extends NodeVisitor {
     public LanguageType visit(VariableLookup varlo) throws SymbolException {
         String name = varlo.getName();
         // System.out.println("+++ variable looked up " + name);
-        symbolTable.lookup(name);
+        VariableSymbol symbol = (VariableSymbol) symbolTable.lookup(name);
+        if (symbol.getState() == VariableSymbol.State.DECLARED)
+            throw new SymbolException("ERROR: Symbol '" + name + "' was not initialized");
         return null;
     }
 
@@ -89,7 +91,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     public void visit(VariableDeclaration vardec)
             throws SymbolException {
         // System.out.println("--- variable declared " + vardec.getName());
-        Symbol type = symbolTable.lookup(vardec.getType().getValue());
+        TypeSymbol type = (TypeSymbol) symbolTable.lookup(vardec.getType().getValue());
         symbolTable.declare(new VariableSymbol(vardec.getName(), type));
     }
 }

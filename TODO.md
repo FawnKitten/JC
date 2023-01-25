@@ -5,6 +5,7 @@ things that are to be done.
 
 Short-Term
 ----------
+* do not let variables be assigned to other uninitialized variables
 * add line numbers to te lexer and parser 
   * better error reporting
 * type checking
