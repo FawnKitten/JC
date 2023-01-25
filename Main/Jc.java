@@ -21,6 +21,7 @@ public class Jc {
     public void eval() {
         try {
             parser.generateTree();
+            System.out.println("Generated Tree");
             visitor.setTree(parser.getTree());
             visitor.eval();
         } catch (InvalidSyntaxException e) {
