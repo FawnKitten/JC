@@ -6,7 +6,8 @@ import java.util.Collections;
 public class Text {
     public Text(String rawText) {
         this.text = rawText;
-        Collections.addAll(lines, text.split("\n"));
+        for (String line: text.split("\n"))
+            lines.add(line + "\n");
         currentChar = rawText.charAt(0);
     }
     private final String text;
@@ -33,7 +34,6 @@ public class Text {
             return;
         }
         currentChar = lines.get(linePosition).charAt(columnPosition);
-        System.out.print(currentChar);
     }
 
     public Character nextChar() {

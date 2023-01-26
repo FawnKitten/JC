@@ -1,6 +1,7 @@
 package Main;
 
 import Visitors.SymbolTableVisitor;
+import Visitors.PrintVisitor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
