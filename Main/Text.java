@@ -42,4 +42,8 @@ public class Text {
         else
             return null;
     }
+
+    public String getLine() {
+        return lines.get(linePosition);
+    }
 }

@@ -74,10 +74,19 @@ public class Lexer {
                 text.advancePosition();
                 return new Token(",", Token.Type.COMMA);
             }else {
-                throw new InvalidCharacterException("Invalid character `" + text.getCurrentChar() + "'");
+                invalidCharacter();
             }
         }
         return new Token("", Token.Type.NONE);
+    }
+
+    private void invalidCharacter() throws InvalidCharacterException {
+        int line = text.linePosition;
+        int col = text.columnPosition;
+        String message = "Invalid character at " + line + ":" + col + " `" + text.getCurrentChar() + "'" + '\n' +
+                "\t" + text.getLine() +
+                "\t" + (" ").repeat(col) + "^";
+        throw new InvalidCharacterException(message);
     }
 
     private boolean matchComment() {

@@ -25,7 +25,11 @@ public class Main {
                 break;
             }
         } */
-        Jc jc = new Jc(readFromFile("file.c"));
+        Jc jc;
+        if (args.length > 1)
+            jc = new Jc(readFromFile(args[0]));
+        else
+            jc = new Jc(readFromFile("file.c"));
         jc.setVisitor(new SymbolTableVisitor());
         jc.eval();
         ((SymbolTableVisitor)jc.getVisitor()).dumpSymbolTable();

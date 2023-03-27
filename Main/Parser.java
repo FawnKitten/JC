@@ -146,9 +146,14 @@ public class Parser {
         StringBuilder errTypes = new StringBuilder(types[0].toString());
         for (int i=1; i<types.length; i++)
             errTypes.append(", ").append(types[i].toString());
-        throw new InvalidSyntaxException("expected type " + errTypes +
-                " but got type " + tok.getType() +
-                " at line " + lexer.text.linePosition + " col " + lexer.text.columnPosition);
+        int line = lexer.text.linePosition;
+        int col = lexer.text.columnPosition;
+        String indicator = col > 1 ? (" ").repeat(col-2) + "~^~" : "^~";
+        String message = "Expected type " + errTypes + " but got type " + tok.getType() + " at " + line+":"+col + '\n' +
+                '\t' + lexer.text.getLine() +
+                '\t' + indicator;
+
+        throw new InvalidSyntaxException(message);
     }
 
     private boolean isOfType(Token tok, Token.Type... types) {
