@@ -3,16 +3,16 @@ package Main;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Text {
+public class Text implements Cloneable {
     public Text(String rawText) {
         this.text = rawText;
         for (String line: text.split("\n"))
             lines.add(line + "\n");
         currentChar = rawText.charAt(0);
     }
-    private final String text;
+    private String text;
     private int absolutePosition = 0; // number of characters to the beginning (including new lines)
-    private final ArrayList<String> lines = new ArrayList<>();
+    private ArrayList<String> lines = new ArrayList<>();
     public int linePosition = 0; // what line number
     public int columnPosition = 0; // what column of the line
     private Character currentChar;
@@ -45,5 +45,21 @@ public class Text {
 
     public String getLine() {
         return lines.get(linePosition);
+    }
+
+    @Override
+    public Text clone() {
+        try {
+            Text clone = (Text) super.clone();
+            clone.text = text;
+            clone.absolutePosition = absolutePosition;
+            clone.lines = lines;
+            clone.linePosition = linePosition;
+            clone.columnPosition = columnPosition;
+            clone.currentChar = currentChar;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

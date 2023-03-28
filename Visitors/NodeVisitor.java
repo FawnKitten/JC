@@ -43,6 +43,9 @@ public abstract class NodeVisitor {
         } else if (node instanceof VariableDeclaration) {
             visit((VariableDeclaration) node);
             return null;
+        } else if (node instanceof IfStatement) {
+            visit((IfStatement) node);
+            return null;
         } else
             throw new InvalidNodeTypeException("No valid cast for `node`");
     }
@@ -70,4 +73,7 @@ public abstract class NodeVisitor {
 
     public abstract void visit(VariableDeclaration vardec)
         throws SymbolException;
+
+    public abstract void visit(IfStatement ifstat)
+            throws  InterpretException, SymbolException;
 }

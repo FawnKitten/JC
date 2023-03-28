@@ -1,6 +1,6 @@
 package LanguageTypes;
 
-public class LanguageInteger implements LanguageType {
+public class LanguageInteger extends LanguageType {
     private final int number;
     public int getNumber() { return number; }
 
@@ -10,6 +10,7 @@ public class LanguageInteger implements LanguageType {
         return "LanguageInteger(" + number + ")";
     }
 
+    @Override
     public LanguageType plus(LanguageType other) {
         if (other instanceof LanguageInteger)
             return new LanguageInteger(
@@ -22,6 +23,7 @@ public class LanguageInteger implements LanguageType {
                     "[LanguageFloat.plus] LanguageInteger or LanguageFloat expected");
     }
 
+    @Override
     public LanguageType minus(LanguageType other) {
         if (other instanceof LanguageInteger)
             return new LanguageInteger(
@@ -34,6 +36,7 @@ public class LanguageInteger implements LanguageType {
                     "[LanguageFloat.minus] LanguageInteger or LanguageFloat expected");
     }
 
+    @Override
     public LanguageType divide(LanguageType other) {
         if (other instanceof LanguageInteger)
             return new LanguageInteger(
@@ -46,6 +49,7 @@ public class LanguageInteger implements LanguageType {
                     "[LanguageFloat.divide] LanguageInteger or LanguageFloat expected");
     }
 
+    @Override
     public LanguageType times(LanguageType other) {
         if (other instanceof LanguageInteger)
             return new LanguageInteger(
@@ -53,6 +57,17 @@ public class LanguageInteger implements LanguageType {
         else if (other instanceof LanguageFloat)
             return new LanguageFloat(
                     number * ((LanguageFloat)other).getNumber());
+        else
+            throw new RuntimeException(
+                    "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
+    }
+
+    @Override
+    boolean equals(LanguageType other) {
+        if (other instanceof LanguageFloat)
+            return Math.abs(((LanguageFloat) other).getNumber() - getNumber()) < 0.0001;
+        else if (other instanceof LanguageInteger)
+            return ((LanguageInteger) other).getNumber() == getNumber();
         else
             throw new RuntimeException(
                     "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");

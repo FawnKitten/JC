@@ -3,6 +3,7 @@ package Visitors;
 import Exceptions.*;
 import LanguageTypes.*;
 import ASTNodes.*;
+
 import java.util.HashMap;
 
 public class InterpretVisitor extends NodeVisitor {
@@ -12,6 +13,8 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void eval() throws InterpretException, SymbolException {
+        SymbolTableVisitor symtab = new SymbolTableVisitor(getTree());
+        symtab.eval();
         visit(getTree());
         System.out.println("Variables:");
         System.out.println(variables);
@@ -84,7 +87,7 @@ public class InterpretVisitor extends NodeVisitor {
         LanguageType value = (LanguageType)visit(varas.getValue());
         String name = varas.getName();
         // System.out.println("*** " + name + " <- " + value.toString());
-        // for debuging purpouses uncomment
+        // for debuting purposes uncomment
         variables.put(name, value);
     }
 
@@ -101,8 +104,19 @@ public class InterpretVisitor extends NodeVisitor {
     public void visit(VariableDeclaration vardec) {
         String name = vardec.getName();
         // System.out.println("*** " + name + " := " + type);
-        // for debuging purpouses uncomment
+        // for debuting purposes uncomment
         variables.put(name, null);
     }
 
+    @Override
+    public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
+        // InterpretVisitor.visit(IfStatement) TODO: only visit body if condition != 0
+        if (visit(ifstat.getCondition()) instanceof LanguageInteger) {
+            LanguageInteger condition = (LanguageInteger) visit(ifstat.getCondition());
+            if (!(condition.equals(new LanguageInteger(0)))) {
+                System.out.println("Running body...");
+                visit(ifstat.getBody());
+            }
+        }
+    }
 }

@@ -3,12 +3,12 @@ package Main;
 import Exceptions.InvalidCharacterException;
 
 public class Lexer {
-    public final Text text;
+    public Text text;
 
     // for now return types are language keywords
     // TODO: add types to symbol table
     private final String[] keyWords = {
-        "int", "void", "float"
+        "if"
     };
 
     public Lexer(String text) {
@@ -133,14 +133,22 @@ public class Lexer {
         }
         for (String keyWord : keyWords) {
             if (keyWord.equals(res.toString()))
-                return new Token(res.toString(), Token.Type.KEY_WORD);
+                return new Token(res.toString(), Token.Type.valueOf("KEY_WORD_" + res.toString().toUpperCase()));
         }
         return new Token(res.toString(), Token.Type.NAME);
     }
 
     private void skipSpace() {
-        while (text.getCurrentChar() != null && (Character.isWhitespace(text.getCurrentChar()) || text.getCurrentChar() == '\n'))
+        while (text.getCurrentChar() != null &&
+                (Character.isWhitespace(text.getCurrentChar()) || text.getCurrentChar() == '\n'))
             text.advancePosition();
+    }
+
+    public Token peekToken() throws InvalidCharacterException {
+        Text currentText = text.clone();
+        Token peek = consumeNextToken();
+        text = currentText;
+        return peek;
     }
 }
 

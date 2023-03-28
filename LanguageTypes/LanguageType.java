@@ -1,8 +1,9 @@
 package LanguageTypes;
 
-public interface LanguageType {
-    LanguageType plus(LanguageType other);
-    LanguageType minus(LanguageType other);
-    LanguageType divide(LanguageType other);
-    LanguageType times(LanguageType other);
+public abstract class LanguageType {
+    public abstract LanguageType plus(LanguageType other);
+    public abstract LanguageType minus(LanguageType other);
+    public abstract LanguageType divide(LanguageType other);
+    public abstract LanguageType times(LanguageType other);
+    abstract boolean equals(LanguageType other);
 }

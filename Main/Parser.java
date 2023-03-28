@@ -28,7 +28,7 @@ public class Parser {
 //        return null;
 //    }
 
-    private ASTNode assignemnt()
+    private ASTNode assignment()
             throws InvalidSyntaxException, InvalidCharacterException {
         Token name_tok = advanceToken(Token.Type.NAME);
         advanceToken(Token.Type.EQUALS);
@@ -39,8 +39,8 @@ public class Parser {
     private ArrayList<ASTNode> declarations()
             throws InvalidSyntaxException, InvalidCharacterException {
         ArrayList<ASTNode> vardecs = new ArrayList<>();
-        while (currentToken.getType() == Token.Type.KEY_WORD) {
-            Token type = advanceToken(Token.Type.KEY_WORD);
+        while (currentToken.getType() == Token.Type.NAME && lexer.peekToken().getType() == Token.Type.NAME) {
+            Token type = advanceToken(Token.Type.NAME);
             if (type.getValue().equals("void"))
                 throw new InvalidSyntaxException("`void` is not a valid variable type");
             vardecs.addAll(variable_declaration(type));
@@ -129,10 +129,20 @@ public class Parser {
                 Token.Type.LEFT_PAREN, Token.Type.INT_CONST))
             return numericalExpression();
         else if (isOfType(currentToken, Token.Type.NAME))
-            return assignemnt();
-        else {
-            return new NoOp();
+            return assignment();
+        else if (isOfType(currentToken, Token.Type.KEY_WORD_IF)) {
+            if (currentToken.getValue().equals("if")) return ifStatement();
         }
+        return new NoOp();
+    }
+
+    private ASTNode ifStatement() throws InvalidSyntaxException, InvalidCharacterException {
+        advanceToken(Token.Type.KEY_WORD_IF);
+        advanceToken(Token.Type.LEFT_PAREN);
+        ASTNode condition = numericalExpression();
+        advanceToken(Token.Type.RIGHT_PAREN);
+        CompoundStatement body = (CompoundStatement) compoundStatements();
+        return new IfStatement(condition, body);
     }
 
 

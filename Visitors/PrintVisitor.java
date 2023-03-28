@@ -88,6 +88,17 @@ public class PrintVisitor extends NodeVisitor {
                + ", " + vardec.getType().getValue() + ">()");
    }
 
+   @Override
+   public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
+        print("IfStatement( Condition:");
+        indentation++;
+        visit(ifstat.getCondition());
+        print(", Body:");
+        visit(ifstat.getBody());
+        indentation--;
+        print(")");
+   }
+
     private String pad(int num) {
         return "-".repeat(Math.max(0, num));
     }

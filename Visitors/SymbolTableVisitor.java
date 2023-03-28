@@ -4,13 +4,21 @@ import ASTNodes.*;
 import Exceptions.InterpretException;
 import Exceptions.RedeclaredSymbolException;
 import Exceptions.SymbolException;
+import Exceptions.SymbolNotTypeException;
 import LanguageTypes.LanguageType;
+import Symbols.Symbol;
 import Symbols.SymbolTable;
 import Symbols.TypeSymbol;
 import Symbols.VariableSymbol;
 
 public class SymbolTableVisitor extends NodeVisitor {
     private final SymbolTable symbolTable = new SymbolTable();
+
+    @Override
+    public void eval() throws InterpretException, SymbolException {
+        super.eval();
+        dumpSymbolTable();
+    }
 
     public void dumpSymbolTable() {
         System.out.println("Symbol Table Visitor contents:");
@@ -91,7 +99,22 @@ public class SymbolTableVisitor extends NodeVisitor {
     public void visit(VariableDeclaration vardec)
             throws SymbolException {
         // System.out.println("--- variable declared " + vardec.getName());
-        TypeSymbol type = (TypeSymbol) symbolTable.lookup(vardec.getType().getValue());
-        symbolTable.declare(new VariableSymbol(vardec.getName(), type));
+        Symbol typeSymbol = symbolTable.lookup(vardec.getType().getValue());
+        try {
+            TypeSymbol type = (TypeSymbol) typeSymbol;
+            symbolTable.declare(new VariableSymbol(vardec.getName(), type));
+        } catch (ClassCastException e) {
+            invalidTypeException(vardec.getName(), typeSymbol.getName());
+        }
+    }
+
+    @Override
+    public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
+        visit(ifstat.getCondition());
+        visit(ifstat.getBody());
+    }
+
+    private void invalidTypeException(String varName, String typeName) throws SymbolNotTypeException {
+        throw new SymbolNotTypeException("Can't declare `" + varName + "'. `" + typeName + "' is not a type ");
     }
 }

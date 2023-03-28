@@ -7,6 +7,7 @@ Short-Term
 ----------
 * do not let variables be assigned to other uninitialized variables
 * type checking
+* add if statement
 
 Features to be added
 --------------------
