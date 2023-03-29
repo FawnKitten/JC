@@ -5,5 +5,4 @@ public abstract class LanguageType {
     public abstract LanguageType minus(LanguageType other);
     public abstract LanguageType divide(LanguageType other);
     public abstract LanguageType times(LanguageType other);
-    abstract boolean equals(LanguageType other);
 }

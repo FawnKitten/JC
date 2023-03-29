@@ -6,8 +6,11 @@ things that are to be done.
 Short-Term
 ----------
 * do not let variables be assigned to other uninitialized variables
-* type checking
-* add if statement
+* better type checking
+* add else clause
+* !!! scoping
+  * as of now the way this would be done is source to source compilation
+  * find shortcut?
 
 Features to be added
 --------------------
@@ -17,10 +20,10 @@ Features to be added
     * type/value declaration
   * types (int, char, void, bool)
 * control structure
-    * if statement
     * else statement
     * while loop
     * for loop
+    * scope blocks
 (here is where things get tricky, mostly because it is uncharted territory)
 * functions
   * function declaration

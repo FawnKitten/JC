@@ -61,15 +61,4 @@ public class LanguageFloat extends LanguageType {
             throw new RuntimeException(
                     "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
     }
-
-    @Override
-    boolean equals(LanguageType other) {
-        if (other instanceof LanguageFloat)
-            return Math.abs(((LanguageFloat) other).getNumber() - getNumber()) < 0.0001;
-        else if (other instanceof LanguageInteger)
-            return ((LanguageInteger) other).getNumber() == getNumber();
-        else
-            throw new RuntimeException(
-                    "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
-    }
 }

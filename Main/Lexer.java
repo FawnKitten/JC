@@ -83,7 +83,7 @@ public class Lexer {
     private void invalidCharacter() throws InvalidCharacterException {
         int line = text.linePosition;
         int col = text.columnPosition;
-        String message = "Invalid character at " + line + ":" + col + " `" + text.getCurrentChar() + "'" + '\n' +
+        String message = "Invalid character at " + (line+1) + ":" + (col+1) + " `" + text.getCurrentChar() + "'" + '\n'+
                 "\t" + text.getLine() +
                 "\t" + (" ").repeat(col) + "^";
         throw new InvalidCharacterException(message);

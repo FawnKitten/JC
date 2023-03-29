@@ -3,7 +3,6 @@ package Main;
 import ASTNodes.*;
 import Exceptions.InvalidCharacterException;
 import Exceptions.InvalidSyntaxException;
-
 import java.util.ArrayList;
 
 @SuppressWarnings("CommentedOutCode")
@@ -109,6 +108,12 @@ public class Parser {
         }
     }
 
+    private boolean isBlockStatement(ASTNode statement) {
+        return (statement instanceof IfStatement ||
+                statement instanceof CompoundStatement);
+        // When introduce for, while, function statements include here
+    }
+
     private ASTNode compoundStatements()
             throws InvalidSyntaxException, InvalidCharacterException {
         advanceToken(Token.Type.LEFT_CURLY);
@@ -117,7 +122,8 @@ public class Parser {
         comstat.addMultipleStatements(decs);
         while (currentToken.getType() != Token.Type.RIGHT_CURLY) {
             comstat.addStatement(statement());
-            advanceToken(Token.Type.SEMI_COLON);
+            if (!isBlockStatement(comstat.getStatements().get(comstat.getStatements().size()-1)))
+                advanceToken(Token.Type.SEMI_COLON); // no need for semicolon after block statements
         }
         advanceToken(Token.Type.RIGHT_CURLY);
         return comstat;
@@ -159,7 +165,7 @@ public class Parser {
         int line = lexer.text.linePosition;
         int col = lexer.text.columnPosition;
         String indicator = col > 1 ? (" ").repeat(col-2) + "~^~" : "^~";
-        String message = "Expected type " + errTypes + " but got type " + tok.getType() + " at " + line+":"+col + '\n' +
+        String message = "Expected type "+errTypes+" but got type "+tok.getType()+" at "+(line+1)+":"+(col+1)+'\n' +
                 '\t' + lexer.text.getLine() +
                 '\t' + indicator;
 

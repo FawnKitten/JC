@@ -20,7 +20,7 @@ public class LanguageInteger extends LanguageType {
                     number + ((LanguageFloat)other).getNumber());
         else
             throw new RuntimeException(
-                    "[LanguageFloat.plus] LanguageInteger or LanguageFloat expected");
+                    "[LanguageInteger.plus] LanguageInteger or LanguageFloat expected");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LanguageInteger extends LanguageType {
                     number - ((LanguageFloat)other).getNumber());
         else
             throw new RuntimeException(
-                    "[LanguageFloat.minus] LanguageInteger or LanguageFloat expected");
+                    "[LanguageInteger.minus] LanguageInteger or LanguageFloat expected");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class LanguageInteger extends LanguageType {
                     number / ((LanguageFloat)other).getNumber());
         else
             throw new RuntimeException(
-                    "[LanguageFloat.divide] LanguageInteger or LanguageFloat expected");
+                    "[LanguageInteger.divide] LanguageInteger or LanguageFloat expected");
     }
 
     @Override
@@ -59,17 +59,7 @@ public class LanguageInteger extends LanguageType {
                     number * ((LanguageFloat)other).getNumber());
         else
             throw new RuntimeException(
-                    "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
+                    "[LanguageInteger.times] LanguageInteger or LanguageFloat expected");
     }
 
-    @Override
-    boolean equals(LanguageType other) {
-        if (other instanceof LanguageFloat)
-            return Math.abs(((LanguageFloat) other).getNumber() - getNumber()) < 0.0001;
-        else if (other instanceof LanguageInteger)
-            return ((LanguageInteger) other).getNumber() == getNumber();
-        else
-            throw new RuntimeException(
-                    "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
-    }
 }
