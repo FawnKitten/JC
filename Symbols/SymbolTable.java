@@ -8,16 +8,12 @@ import java.util.Map;
 
 public class SymbolTable {
 
-    public enum Type {
-        VARIABLE, TYPE
-    }
-
     private final HashMap<String, Symbol> symTab = new HashMap<>();
 
     public void declare(Symbol symbol)
         throws RedeclaredSymbolException {
         // do not allow symbols to be redeclared
-        if (symTab.containsKey(symbol.getName()))
+        if (has(symbol.getName()))
             throw new RedeclaredSymbolException(
                     "Error: " + symbol.getName() + " has already been declared");
         symTab.put(symbol.getName(), symbol);
@@ -26,7 +22,7 @@ public class SymbolTable {
     public Symbol lookup(String symbolName)
         throws UndefinedSymbolException {
         if (!symTab.containsKey(symbolName))
-            throw new UndefinedSymbolException("Error: Undefined Symbol " + symbolName);
+            throw new UndefinedSymbolException("Error: Undefined Symbol `" + symbolName + "'");
         return symTab.get(symbolName);
     }
 
@@ -45,4 +41,7 @@ public class SymbolTable {
         return "SymbolTable(" + symTab + ")";
     }
 
+    public boolean has(String symbolName) {
+        return symTab.containsKey(symbolName);
+    }
 }

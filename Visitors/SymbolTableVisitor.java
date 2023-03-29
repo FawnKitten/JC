@@ -6,24 +6,16 @@ import Exceptions.RedeclaredSymbolException;
 import Exceptions.SymbolException;
 import Exceptions.SymbolNotTypeException;
 import LanguageTypes.LanguageType;
-import Symbols.Symbol;
-import Symbols.SymbolTable;
-import Symbols.TypeSymbol;
-import Symbols.VariableSymbol;
+import Symbols.*;
 
 public class SymbolTableVisitor extends NodeVisitor {
-    private final SymbolTable symbolTable = new SymbolTable();
+    private final ScopedSymbolTable symbolTable = new ScopedSymbolTable();
 
     @Override
     public void eval() throws InterpretException, SymbolException {
+        symbolTable.enterScope();
         super.eval();
-        dumpSymbolTable();
-    }
-
-    public void dumpSymbolTable() {
-        System.out.println("Symbol Table Visitor contents:");
-        System.out.println("=============================");
-        symbolTable.dumpContents();
+        symbolTable.exitScope();
     }
 
     public SymbolTableVisitor() {
@@ -111,9 +103,13 @@ public class SymbolTableVisitor extends NodeVisitor {
     @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
         visit(ifstat.getCondition());
+        symbolTable.enterScope();
         visit(ifstat.getBody());
+        symbolTable.exitScope();
         if (ifstat.getElseBody() != null) {
+            symbolTable.enterScope();
             visit(ifstat.getElseBody());
+            symbolTable.exitScope();
         }
     }
 

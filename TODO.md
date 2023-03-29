@@ -9,9 +9,6 @@ Short-Term
 * better type checking
 * boolean operators
 * remove need for braces for one line blocks
-* !!! scoping
-  * as of now the way this would be done is source to source compilation
-  * find shortcut?
 * Strings
   * String Literals (char arrays?)
   * String Variables
@@ -28,7 +25,10 @@ Features to be added
     * while loop
     * for loop
     * scope blocks
+    * introduce scope for functions 
+
 (here is where things get tricky, mostly because it is uncharted territory)
+
 * functions
   * function declaration
   * main function/entry point

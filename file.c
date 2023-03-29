@@ -12,10 +12,11 @@
         x = 5;
         z = x * 3;
     } else {
+        float hello;
         zero = 0;
+        hello = zero + a;
         if (1) {
             zero = 1;
         }
     }
-    a = 4;
 }
