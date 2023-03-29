@@ -5,10 +5,8 @@ import Exceptions.InvalidCharacterException;
 public class Lexer {
     public Text text;
 
-    // for now return types are language keywords
-    // TODO: add types to symbol table
     private final String[] keyWords = {
-        "if"
+        "if", "else"
     };
 
     public Lexer(String text) {

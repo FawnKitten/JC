@@ -112,6 +112,9 @@ public class SymbolTableVisitor extends NodeVisitor {
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
         visit(ifstat.getCondition());
         visit(ifstat.getBody());
+        if (ifstat.getElseBody() != null) {
+            visit(ifstat.getElseBody());
+        }
     }
 
     private void invalidTypeException(String varName, String typeName) throws SymbolNotTypeException {

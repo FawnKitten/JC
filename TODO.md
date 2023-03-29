@@ -7,10 +7,15 @@ Short-Term
 ----------
 * do not let variables be assigned to other uninitialized variables
 * better type checking
-* add else clause
+* boolean operators
+* remove need for braces for one line blocks
 * !!! scoping
   * as of now the way this would be done is source to source compilation
   * find shortcut?
+* Strings
+  * String Literals (char arrays?)
+  * String Variables
+* printing/logging of some sort
 
 Features to be added
 --------------------
@@ -20,7 +25,6 @@ Features to be added
     * type/value declaration
   * types (int, char, void, bool)
 * control structure
-    * else statement
     * while loop
     * for loop
     * scope blocks

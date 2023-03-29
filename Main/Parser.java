@@ -5,7 +5,6 @@ import Exceptions.InvalidCharacterException;
 import Exceptions.InvalidSyntaxException;
 import java.util.ArrayList;
 
-@SuppressWarnings("CommentedOutCode")
 public class Parser {
     private final Lexer lexer;
     private Token currentToken;
@@ -21,11 +20,6 @@ public class Parser {
         currentToken = lexer.consumeNextToken();
         tree = compoundStatements();
     }
-
-//    private ASTNode block() {
-//        // Parser.block() TODO: Implement block
-//        return null;
-//    }
 
     private ASTNode assignment()
             throws InvalidSyntaxException, InvalidCharacterException {
@@ -142,13 +136,23 @@ public class Parser {
         return new NoOp();
     }
 
-    private ASTNode ifStatement() throws InvalidSyntaxException, InvalidCharacterException {
+    private ASTNode ifStatement()
+            throws InvalidSyntaxException, InvalidCharacterException {
         advanceToken(Token.Type.KEY_WORD_IF);
         advanceToken(Token.Type.LEFT_PAREN);
         ASTNode condition = numericalExpression();
         advanceToken(Token.Type.RIGHT_PAREN);
         CompoundStatement body = (CompoundStatement) compoundStatements();
-        return new IfStatement(condition, body);
+        CompoundStatement elseBody = null;
+        if (currentToken.getType() == Token.Type.KEY_WORD_ELSE)
+            elseBody = elseClause();
+        return new IfStatement(condition, body, elseBody);
+    }
+
+    private CompoundStatement elseClause()
+            throws InvalidSyntaxException, InvalidCharacterException {
+        advanceToken(Token.Type.KEY_WORD_ELSE);
+        return (CompoundStatement) compoundStatements();
     }
 
 

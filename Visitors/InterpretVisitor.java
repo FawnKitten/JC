@@ -110,11 +110,12 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
-        // InterpretVisitor.visit(IfStatement) TODO: only visit body if condition != 0
         if (visit(ifstat.getCondition()) instanceof LanguageInteger condition) {
             LanguageInteger zero = new LanguageInteger(0);
             if (!(condition.getNumber() == zero.getNumber())) {
                 visit(ifstat.getBody());
+            } else if (ifstat.getElseBody() != null) {
+                visit(ifstat.getElseBody());
             }
         }
     }

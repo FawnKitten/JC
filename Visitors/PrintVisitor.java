@@ -95,7 +95,11 @@ public class PrintVisitor extends NodeVisitor {
         visit(ifstat.getCondition());
         print(", Body:");
         visit(ifstat.getBody());
-        indentation--;
+        if (ifstat.getElseBody() != null) {
+            print(", Else:");
+            visit(ifstat.getElseBody());
+        }
+       indentation--;
         print(")");
    }
 
