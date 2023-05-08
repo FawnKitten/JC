@@ -7,7 +7,8 @@ public class Token {
         DASH, SLASH, STAR, LEFT_PAREN,
         RIGHT_PAREN, LEFT_BRACKET, RIGHT_BRACKET,
         LEFT_CURLY, RIGHT_CURLY, SEMI_COLON,
-        NAME, EQUALS, COMMA, KEY_WORD_IF, KEY_WORD_ELSE
+        NAME, EQUALS, COMMA, KEY_WORD_IF, KEY_WORD_ELSE,
+        BOOL_EQUALS
     }
     private String value;
     private Token.Type type;

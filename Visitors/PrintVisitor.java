@@ -103,6 +103,17 @@ public class PrintVisitor extends NodeVisitor {
         print(")");
    }
 
+   @Override
+   public boolean visit(BooleanEqualsOperator booleq) throws InterpretException, SymbolException {
+        print("BooleanEquals(");
+        indentation++;
+        visit(booleq.getLeft());
+        visit(booleq.getRight());
+        indentation--;
+        print(")");
+        return false;
+   }
+
     private String pad(int num) {
         return "-".repeat(Math.max(0, num));
     }

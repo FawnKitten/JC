@@ -29,7 +29,6 @@ public class Main {
             jc = new Jc(readFromFile(args[0]));
         else
             jc = new Jc(readFromFile("file.c"));
-//        jc.setVisitor(new PrintVisitor());
         jc.eval();
     }
 

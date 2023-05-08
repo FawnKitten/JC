@@ -62,4 +62,8 @@ public class Text implements Cloneable {
             throw new AssertionError();
         }
     }
+
+    public char peekCharacter() {
+        return text.charAt(absolutePosition+1);
+    }
 }

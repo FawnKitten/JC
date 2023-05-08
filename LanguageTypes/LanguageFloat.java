@@ -61,4 +61,12 @@ public class LanguageFloat extends LanguageType {
             throw new RuntimeException(
                     "[LanguageFloat.times] LanguageInteger or LanguageFloat expected");
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (that == null)
+            return false;
+        else
+            return this.getNumber() == ((LanguageFloat) that).getNumber();
+    }
 }

@@ -30,6 +30,10 @@ public class Lexer {
             }
             if (Character.isDigit(text.getCurrentChar())) {
                 return nextNumber();
+            } else if (text.getCurrentChar() == '=' && text.peekCharacter() == '=') {
+                text.advancePosition();
+                text.advancePosition();
+                return new Token("==", Token.Type.BOOL_EQUALS);
             } else if (text.getCurrentChar() == '+') {
                 text.advancePosition();
                 return new Token("+", Token.Type.PLUS);
@@ -148,5 +152,6 @@ public class Lexer {
         text = currentText;
         return peek;
     }
+
 }
 

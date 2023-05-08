@@ -36,13 +36,13 @@ public class Parser {
             Token type = advanceToken(Token.Type.NAME);
             if (type.getValue().equals("void"))
                 throw new InvalidSyntaxException("`void` is not a valid variable type");
-            vardecs.addAll(variable_declaration(type));
+            vardecs.addAll(variableDeclaration(type));
             advanceToken(Token.Type.SEMI_COLON);
         }
         return vardecs;
     }
 
-    private ArrayList<ASTNode> variable_declaration(Token type)
+    private ArrayList<ASTNode> variableDeclaration(Token type)
             throws InvalidSyntaxException, InvalidCharacterException {
         // Main.Parser TODO: add behaviour for initialization
         ArrayList<ASTNode> vars = new ArrayList<>();
@@ -54,6 +54,17 @@ public class Parser {
             vars.add(new VariableDeclaration(name, type));
         }
         return vars;
+    }
+
+    // Main.Parser TODO: Implement function `expression` to decide between boolean and numerical expressions
+    private ASTNode booleanExpression()
+            throws InvalidSyntaxException, InvalidCharacterException {
+       ASTNode left = numericalExpression();
+       Token token = advanceToken(Token.Type.BOOL_EQUALS);
+       ASTNode right = numericalExpression();
+       if (token.getType() == Token.Type.BOOL_EQUALS)
+           return new BooleanEqualsOperator(left, right);
+       throw new InvalidSyntaxException("Main::booleanExpression: invalid boolean operator " + token);
     }
 
     private ASTNode numericalExpression()
@@ -140,7 +151,7 @@ public class Parser {
             throws InvalidSyntaxException, InvalidCharacterException {
         advanceToken(Token.Type.KEY_WORD_IF);
         advanceToken(Token.Type.LEFT_PAREN);
-        ASTNode condition = numericalExpression();
+        ASTNode condition = booleanExpression();
         advanceToken(Token.Type.RIGHT_PAREN);
         CompoundStatement body = (CompoundStatement) compoundStatements();
         CompoundStatement elseBody = null;
@@ -166,10 +177,10 @@ public class Parser {
         StringBuilder errTypes = new StringBuilder(types[0].toString());
         for (int i=1; i<types.length; i++)
             errTypes.append(", ").append(types[i].toString());
-        int line = lexer.text.linePosition;
-        int col = lexer.text.columnPosition;
+        int line = lexer.text.linePosition + 1;
+        int col = lexer.text.columnPosition + 1;
         String indicator = col > 1 ? (" ").repeat(col-2) + "~^~" : "^~";
-        String message = "Expected type "+errTypes+" but got type "+tok.getType()+" at "+(line+1)+":"+(col+1)+'\n' +
+        String message = "Expected type "+errTypes+" but got type "+tok.getType()+" at "+line+":"+col + '\n' +
                 '\t' + lexer.text.getLine() +
                 '\t' + indicator;
 
