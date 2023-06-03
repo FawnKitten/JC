@@ -68,4 +68,9 @@ public class LanguageInteger extends LanguageType {
         else
             return this.getNumber() == ((LanguageInteger) that).getNumber();
     }
+
+    @Override
+    public LanguageInteger compareTo(LanguageType that) {
+        return new LanguageInteger((getNumber() > ((LanguageInteger)that).getNumber()) ? 1 : 0);
+    }
 }

@@ -13,13 +13,11 @@ Short-Term
   * String Literals (char arrays?)
   * String Variables
 * printing/logging of some sort
+* Make README.md prettier + more explanation
 
 Features to be added
 --------------------
 * identifiers
-  * symbol table visitor
-    * type lookup method
-    * type/value declaration
   * types (int, char, void, bool)
 * control structure
     * while loop

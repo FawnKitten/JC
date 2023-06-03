@@ -60,11 +60,12 @@ public class Parser {
     private ASTNode booleanExpression()
             throws InvalidSyntaxException, InvalidCharacterException {
        ASTNode left = numericalExpression();
-       Token token = advanceToken(Token.Type.BOOL_EQUALS);
-       ASTNode right = numericalExpression();
-       if (token.getType() == Token.Type.BOOL_EQUALS)
-           return new BooleanEqualsOperator(left, right);
-       throw new InvalidSyntaxException("Main::booleanExpression: invalid boolean operator " + token);
+       if (isOfType(currentToken, Token.Type.BOOL_EQUALS, Token.Type.BOOL_GREATER, Token.Type.BOOL_LESSER)) {
+           Token token = advanceToken(Token.Type.BOOL_EQUALS, Token.Type.BOOL_GREATER, Token.Type.BOOL_LESSER);
+           ASTNode right = numericalExpression();
+           return new BinaryOperator(token, left, right);
+       }
+       return left;
     }
 
     private ASTNode numericalExpression()

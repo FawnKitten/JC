@@ -34,6 +34,20 @@ public class Lexer {
                 text.advancePosition();
                 text.advancePosition();
                 return new Token("==", Token.Type.BOOL_EQUALS);
+            } else if (text.getCurrentChar() == '&' && text.peekCharacter() == '&') {
+                text.advancePosition();
+                text.advancePosition();
+                return new Token("&&", Token.Type.BOOL_AND);
+            } else if (text.getCurrentChar() == '|' && text.peekCharacter() == '|') {
+                text.advancePosition();
+                text.advancePosition();
+                return new Token("||", Token.Type.BOOL_OR);
+            } else if (text.getCurrentChar() == '>') {
+                text.advancePosition();
+                return new Token(">", Token.Type.BOOL_GREATER);
+            } else if (text.getCurrentChar() == '<') {
+                text.advancePosition();
+                return new Token("<", Token.Type.BOOL_LESSER);
             } else if (text.getCurrentChar() == '+') {
                 text.advancePosition();
                 return new Token("+", Token.Type.PLUS);

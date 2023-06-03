@@ -69,4 +69,23 @@ public class LanguageFloat extends LanguageType {
         else
             return this.getNumber() == ((LanguageFloat) that).getNumber();
     }
+
+    private boolean greaterThanFloat(float a, float b) {
+        final float PRECISION = 0.00001f;
+        return Math.abs(a - b) < PRECISION;
+    }
+
+    @Override
+    public LanguageInteger compareTo(LanguageType that) {
+        float thisVal = this.getNumber();
+        float thatVal = ((LanguageFloat) that).getNumber();
+
+        if (greaterThanFloat(thisVal, thatVal))
+            return new LanguageInteger(1);
+        else
+            if (greaterThanFloat(thatVal, thisVal))
+                return new LanguageInteger(-1);
+            else
+                return new LanguageInteger(0);
+    }
 }

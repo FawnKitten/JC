@@ -10,4 +10,6 @@ public abstract class LanguageType {
 
     @Override
     public abstract String toString();
+
+    public abstract LanguageInteger compareTo(LanguageType that);
 }

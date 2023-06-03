@@ -113,13 +113,6 @@ public class SymbolTableVisitor extends NodeVisitor {
         }
     }
 
-    @Override
-    public boolean visit(BooleanEqualsOperator booleq) throws InterpretException, SymbolException {
-        visit(booleq.getLeft());
-        visit(booleq.getRight());
-        return false;
-    }
-
     private void invalidTypeException(String varName, String typeName) throws SymbolNotTypeException {
         throw new SymbolNotTypeException("Can't declare `" + varName + "'. `" + typeName + "' is not a type ");
     }

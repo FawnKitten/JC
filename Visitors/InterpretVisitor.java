@@ -26,6 +26,8 @@ public class InterpretVisitor extends NodeVisitor {
     @Override
     public LanguageType visit(BinaryOperator binop)
             throws InterpretException, SymbolException {
+        LanguageInteger one = new LanguageInteger(1);
+        LanguageInteger zero = new LanguageInteger(0);
         LanguageType left = (LanguageType)visit(binop.getLeft());
         LanguageType right = (LanguageType)visit(binop.getRight());
         // symbol table should not let undeclared symbols to exist
@@ -48,6 +50,10 @@ public class InterpretVisitor extends NodeVisitor {
             case DASH: return left.minus(right);
             case SLASH: return left.divide(right);
             case STAR: return left.times(right);
+            case BOOL_EQUALS: return left.equals(right) ? one : zero;
+            case BOOL_GREATER: return left.compareTo(right);
+            case BOOL_LESSER: return right.compareTo(left);
+
         }
         throw new RuntimeException("[InterpretVisitor.visit(BinaryOperator)] type not handled");
     }
@@ -111,19 +117,13 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
-        if (visit((BooleanEqualsOperator) ifstat.getCondition()))
-            visit(ifstat.getBody());
-        else
-            visit(ifstat.getElseBody());
-    }
-
-    @Override
-    public boolean visit(BooleanEqualsOperator booleq) throws InterpretException, SymbolException {
-        LanguageType left = (LanguageType) visit(booleq.getLeft()); // should be able to cast for operation to succeed
-        LanguageType right = (LanguageType) visit(booleq.getRight()); // should be able to cast for operation to succeed
-        System.out.println(
-                "[DEBUG InterpretVisitor.visit(BooleanEqualsOperator)] " +
-                        left + " == " + right + ": " + left.equals(right));
-        return left.equals(right);
+        if (visit(ifstat.getCondition()) instanceof LanguageInteger condition) {
+            LanguageInteger zero = new LanguageInteger(0);
+            if (!(condition.getNumber() == zero.getNumber())) {
+                visit(ifstat.getBody());
+            } else if (ifstat.getElseBody() != null) {
+                visit(ifstat.getElseBody());
+            }
+        }
     }
 }
