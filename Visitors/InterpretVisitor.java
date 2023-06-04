@@ -45,6 +45,8 @@ public class InterpretVisitor extends NodeVisitor {
         //             + ".");
         //             // + "(had the value of"")");
         // }
+        int lval = ((LanguageInteger)left).getNumber();
+        int rval = ((LanguageInteger)right).getNumber();
         switch (binop.getToken().getType()) {
             case PLUS: return left.plus(right);
             case DASH: return left.minus(right);
@@ -53,7 +55,8 @@ public class InterpretVisitor extends NodeVisitor {
             case BOOL_EQUALS: return left.equals(right) ? one : zero;
             case BOOL_GREATER: return left.compareTo(right);
             case BOOL_LESSER: return right.compareTo(left);
-
+            case BOOL_AND: return new LanguageInteger(((rval != 0) && (lval != 0)) ? 1 : 0);
+            case BOOL_OR: return new LanguageInteger(((rval != 0) || (lval != 0)) ? 1 : 0);
         }
         throw new RuntimeException("[InterpretVisitor.visit(BinaryOperator)] type not handled");
     }

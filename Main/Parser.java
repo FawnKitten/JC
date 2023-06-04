@@ -56,12 +56,39 @@ public class Parser {
         return vars;
     }
 
-    // Main.Parser TODO: Implement function `expression` to decide between boolean and numerical expressions
     private ASTNode booleanExpression()
             throws InvalidSyntaxException, InvalidCharacterException {
+        // TODO: Consider Refactoring Somehow
+        ASTNode left = booleanTerm();
+        while (isOfType(currentToken,
+                Token.Type.BOOL_AND,
+                Token.Type.BOOL_OR
+        )) {
+            Token token = advanceToken(
+                    Token.Type.BOOL_AND,
+                    Token.Type.BOOL_OR
+            );
+            ASTNode right = booleanTerm();
+            left = new BinaryOperator(token, left, right);
+        }
+        return left;
+    }
+
+    // Main.Parser TODO: Implement function `expression` to decide between boolean and numerical expressions
+    private ASTNode booleanTerm()
+            throws InvalidSyntaxException, InvalidCharacterException {
        ASTNode left = numericalExpression();
-       if (isOfType(currentToken, Token.Type.BOOL_EQUALS, Token.Type.BOOL_GREATER, Token.Type.BOOL_LESSER)) {
-           Token token = advanceToken(Token.Type.BOOL_EQUALS, Token.Type.BOOL_GREATER, Token.Type.BOOL_LESSER);
+       // TODO: Consider Refactoring Somehow
+       if (isOfType(currentToken,
+           Token.Type.BOOL_EQUALS,
+           Token.Type.BOOL_GREATER,
+           Token.Type.BOOL_LESSER
+       )) {
+           Token token = advanceToken(
+               Token.Type.BOOL_EQUALS,
+               Token.Type.BOOL_GREATER,
+               Token.Type.BOOL_LESSER
+           );
            ASTNode right = numericalExpression();
            return new BinaryOperator(token, left, right);
        }
@@ -103,7 +130,7 @@ public class Parser {
         } else if (tok.getType() == Token.Type.FLOAT_CONST) {
             return new FloatConstant(tok);
         }else if (tok.getType() == Token.Type.LEFT_PAREN) {
-            ASTNode node = numericalExpression();
+            ASTNode node = booleanExpression();
             advanceToken(Token.Type.RIGHT_PAREN);
             return node;
         } else if (tok.getType() == Token.Type.NAME) {
