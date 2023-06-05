@@ -180,6 +180,8 @@ public class Parser {
             return numericalExpression();
         else if (isOfType(currentToken, Token.Type.NAME))
             return assignment();
+        else if (isOfType(currentToken, Token.Type.STRING_CONST))
+            return stringExpression();
         else if (isOfType(currentToken, Token.Type.KEY_WORD_IF)) {
             if (currentToken.getValue().equals("if")) return ifStatement();
         }
@@ -205,6 +207,11 @@ public class Parser {
         return (CompoundStatement) compoundStatements();
     }
 
+    private ASTNode stringExpression()
+            throws  InvalidSyntaxException, InvalidCharacterException {
+        advanceToken(Token.Type.STRING_CONST);
+        return new NoOp();
+    }
 
     private Token advanceToken(Token.Type... types)
             throws InvalidSyntaxException, InvalidCharacterException {

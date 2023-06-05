@@ -1,6 +1,7 @@
 package Main;
 
 import Exceptions.InvalidCharacterException;
+import Exceptions.StringNotTerminatedException;
 
 public class Lexer {
     public Text text;
@@ -92,6 +93,8 @@ public class Lexer {
             } else if (text.getCurrentChar() == '!') {
                 text.advancePosition();
                 return new Token("!", Token.Type.BOOL_NOT);
+            } else if (text.getCurrentChar() == '"') {
+                return nextStringLiteral();
             } else {
                 invalidCharacter();
             }
@@ -157,6 +160,20 @@ public class Lexer {
         return new Token(res.toString(), Token.Type.NAME);
     }
 
+    private Token nextStringLiteral() throws InvalidCharacterException {
+        StringBuilder res = new StringBuilder();
+        text.advancePosition(); // skip leading '"'
+        int column = text.columnPosition;
+        while (text.getCurrentChar() != '"') {
+            res.append(text.getCurrentChar());
+            if (text.nextChar() == null || text.nextChar() == '\n')
+                stringNotTerminated(column);
+            text.advancePosition();
+        }
+        text.advancePosition(); // skip terminating '"'
+        return new Token(res.toString(), Token.Type.STRING_CONST);
+    }
+
     private void skipSpace() {
         while (text.getCurrentChar() != null &&
                 (Character.isWhitespace(text.getCurrentChar()) || text.getCurrentChar() == '\n'))
@@ -170,5 +187,13 @@ public class Lexer {
         return peek;
     }
 
+    private void stringNotTerminated(int column) throws InvalidCharacterException {
+        int line = text.linePosition + 1;
+        int lengthToEnd = text.columnPosition - column;
+        String message = "String not terminated at line " + line + '\n'
+                + text.getLine()
+                + (" ").repeat(column) + "^" + ("~").repeat(lengthToEnd);
+        throw new StringNotTerminatedException(message);
+    }
 }
 

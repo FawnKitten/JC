@@ -4,6 +4,7 @@
     int a, b, zero;
     float c, d;
     int TRUE, FALSE;
+    "Hello, World!";
     TRUE = 1;
     FALSE = 0;
     a = 1;
@@ -19,6 +20,7 @@
         z = x * 3;
     } else {
         float hello;
+        "";
         zero = 0;
         hello = zero + a;
         if (!(zero == 0) || !(hello < a)) {
