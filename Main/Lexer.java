@@ -89,7 +89,10 @@ public class Lexer {
             } else if (text.getCurrentChar() == ',') {
                 text.advancePosition();
                 return new Token(",", Token.Type.COMMA);
-            }else {
+            } else if (text.getCurrentChar() == '!') {
+                text.advancePosition();
+                return new Token("!", Token.Type.BOOL_NOT);
+            } else {
                 invalidCharacter();
             }
         }

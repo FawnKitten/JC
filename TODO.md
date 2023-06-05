@@ -7,7 +7,6 @@ Short-Term
 ----------
 * do not let variables be assigned to other uninitialized variables
 * better type checking
-* boolean operators
 * remove need for braces for one line blocks
 * Strings
   * String Literals (char arrays?)

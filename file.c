@@ -13,7 +13,7 @@
     // b = a + 2; /* single line block comment */
     // c = a + b;
     // c = c / 3; // file.c TODO: make int divisions work for floats
-    if (a + 1 == b || b > c) {
+    if (!TRUE) {
         int x, z;
         x = 5;
         z = x * 3;
@@ -21,7 +21,7 @@
         float hello;
         zero = 0;
         hello = zero + a;
-        if (TRUE && FALSE) {
+        if (!(zero == 0) || !(hello < a)) {
             zero = 1;
         }
     }

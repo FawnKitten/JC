@@ -77,7 +77,7 @@ public class Parser {
     // Main.Parser TODO: Implement function `expression` to decide between boolean and numerical expressions
     private ASTNode booleanTerm()
             throws InvalidSyntaxException, InvalidCharacterException {
-       ASTNode left = numericalExpression();
+       ASTNode left = booleanFactor();
        // TODO: Consider Refactoring Somehow
        if (isOfType(currentToken,
            Token.Type.BOOL_EQUALS,
@@ -89,10 +89,21 @@ public class Parser {
                Token.Type.BOOL_GREATER,
                Token.Type.BOOL_LESSER
            );
-           ASTNode right = numericalExpression();
+           ASTNode right = booleanFactor();
            return new BinaryOperator(token, left, right);
        }
        return left;
+    }
+
+    private ASTNode booleanFactor()
+            throws InvalidSyntaxException, InvalidCharacterException {
+        if (isOfType(currentToken, Token.Type.BOOL_NOT)) {
+            Token token = advanceToken(Token.Type.BOOL_NOT);
+            ASTNode expression = numericalExpression();
+            return new UnaryOperator(token, expression);
+        } else {
+            return numericalExpression();
+        }
     }
 
     private ASTNode numericalExpression()

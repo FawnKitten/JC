@@ -76,10 +76,12 @@ public class InterpretVisitor extends NodeVisitor {
     public LanguageType visit(UnaryOperator unop)
             throws InterpretException, SymbolException {
         LanguageInteger zero = new LanguageInteger(0);
+        LanguageInteger one = new LanguageInteger(1);
         LanguageType value = (LanguageType)visit(unop.getNode());
         switch (unop.getToken().getType()) {
-           case PLUS: return zero.plus(value);
-           case DASH: return zero.minus(value);
+            case PLUS: return zero.plus(value);
+            case DASH: return zero.minus(value);
+            case BOOL_NOT: return ((LanguageInteger) value).getNumber() == 0 ? one : zero;
         }
         throw new RuntimeException("[InterpretVisitor.visit(UnaryOperator)] type not handled");
     }
