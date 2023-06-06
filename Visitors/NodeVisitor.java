@@ -46,6 +46,9 @@ public abstract class NodeVisitor {
         } else if (node instanceof IfStatement) {
             visit((IfStatement) node);
             return null;
+        } else if (node instanceof WhileStatement) {
+            visit((WhileStatement) node);
+            return null;
         } else
             throw new InvalidNodeTypeException("No valid cast for `node`");
     }
@@ -75,5 +78,8 @@ public abstract class NodeVisitor {
             throws SymbolException;
 
     public abstract void visit(IfStatement ifstat)
+            throws InterpretException, SymbolException;
+
+    public abstract void visit(WhileStatement whileStat)
             throws InterpretException, SymbolException;
 }

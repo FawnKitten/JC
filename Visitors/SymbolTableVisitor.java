@@ -113,6 +113,15 @@ public class SymbolTableVisitor extends NodeVisitor {
         }
     }
 
+    @Override
+    public void visit(WhileStatement whileStat) throws InterpretException, SymbolException {
+        visit(whileStat.getCondition());
+        symbolTable.enterScope();
+        visit(whileStat.getBody());
+        symbolTable.exitScope();
+    }
+
+
     private void invalidTypeException(String varName, String typeName) throws SymbolNotTypeException {
         throw new SymbolNotTypeException("Can't declare `" + varName + "'. `" + typeName + "' is not a type ");
     }

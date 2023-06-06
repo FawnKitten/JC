@@ -3,13 +3,14 @@ package Main;
 public class Token {
     // Token TODO: Add line and column to token for better error reporting
     public enum Type {
-        NONE, INT_CONST, FLOAT_CONST, PLUS,
-        DASH, SLASH, STAR, LEFT_PAREN,
-        RIGHT_PAREN, LEFT_BRACKET, RIGHT_BRACKET,
+        NONE, INT_CONST, FLOAT_CONST, STRING_CONST,
+        PLUS, DASH, SLASH, STAR,
+        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET, RIGHT_BRACKET,
         LEFT_CURLY, RIGHT_CURLY, SEMI_COLON,
-        NAME, EQUALS, COMMA, KEY_WORD_IF, KEY_WORD_ELSE,
+        NAME, EQUALS, COMMA,
+        KEY_WORD_IF, KEY_WORD_ELSE,
+        KEY_WORD_WHILE,
         BOOL_EQUALS, BOOL_AND, BOOL_OR, BOOL_GREATER, BOOL_LESSER, BOOL_NOT,
-        STRING_CONST
     }
     private String value;
     private Token.Type type;

@@ -131,4 +131,15 @@ public class InterpretVisitor extends NodeVisitor {
             }
         }
     }
+
+    @Override
+    public void visit(WhileStatement whileStat) throws InterpretException, SymbolException {
+        LanguageInteger zero = new LanguageInteger(0);
+        while (visit(whileStat.getCondition()) instanceof LanguageInteger condition) {
+            if (!(condition.getNumber() == zero.getNumber())) {
+                visit(whileStat.getBody());
+            } else
+                break;
+        }
+    }
 }

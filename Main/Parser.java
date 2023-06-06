@@ -154,7 +154,8 @@ public class Parser {
 
     private boolean isBlockStatement(ASTNode statement) {
         return (statement instanceof IfStatement ||
-                statement instanceof CompoundStatement);
+                statement instanceof CompoundStatement ||
+                statement instanceof WhileStatement);
         // When introduce for, while, function statements include here
     }
 
@@ -184,8 +185,20 @@ public class Parser {
             return stringExpression();
         else if (isOfType(currentToken, Token.Type.KEY_WORD_IF)) {
             if (currentToken.getValue().equals("if")) return ifStatement();
+        } else if (isOfType(currentToken, Token.Type.KEY_WORD_WHILE)) {
+            return whileStatement();
         }
         return new NoOp();
+    }
+
+    private ASTNode whileStatement()
+            throws InvalidSyntaxException, InvalidCharacterException {
+        advanceToken(Token.Type.KEY_WORD_WHILE);
+        advanceToken(Token.Type.LEFT_PAREN);
+        ASTNode condition = booleanExpression();
+        advanceToken(Token.Type.RIGHT_PAREN);
+        ASTNode body = compoundStatements();
+        return new WhileStatement(condition, body);
     }
 
     private ASTNode ifStatement()

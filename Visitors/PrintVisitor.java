@@ -103,6 +103,18 @@ public class PrintVisitor extends NodeVisitor {
         print(")");
    }
 
+    @Override
+    public void visit(WhileStatement whileStat) throws InterpretException, SymbolException {
+        print("WhileStatement( Condition:");
+        indentation++;
+        visit(whileStat.getCondition());
+        print(", Body:");
+        visit(whileStat.getBody());
+        indentation--;
+        print(")");
+    }
+
+
     private String pad(int num) {
         return "-".repeat(Math.max(0, num));
     }

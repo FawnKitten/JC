@@ -7,7 +7,7 @@ public class Lexer {
     public Text text;
 
     private final String[] keyWords = {
-        "if", "else"
+        "if", "else", "while"
     };
 
     public Lexer(String text) {
