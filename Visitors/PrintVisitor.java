@@ -114,6 +114,17 @@ public class PrintVisitor extends NodeVisitor {
         print(")");
     }
 
+    @Override
+    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+        print("FunctionCall<" + funccall.getName().getValue() + ">(");
+        indentation++;
+        for (ASTNode arg : funccall.getArguments())
+            visit(arg);
+        indentation--;
+        print(")");
+        return null;
+    }
+
 
     private String pad(int num) {
         return "-".repeat(Math.max(0, num));

@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public class InterpretVisitor extends NodeVisitor {
     final private HashMap<String, LanguageType> variables = new HashMap<>();
+    final private HashMap<String, ASTNode> functions = new HashMap<>();
 
     public InterpretVisitor() { super(); }
 
@@ -133,13 +134,25 @@ public class InterpretVisitor extends NodeVisitor {
     }
 
     @Override
-    public void visit(WhileStatement whileStat) throws InterpretException, SymbolException {
+    public void visit(WhileStatement whilestat) throws InterpretException, SymbolException {
         LanguageInteger zero = new LanguageInteger(0);
-        while (visit(whileStat.getCondition()) instanceof LanguageInteger condition) {
+        while (visit(whilestat.getCondition()) instanceof LanguageInteger condition) {
             if (!(condition.getNumber() == zero.getNumber())) {
-                visit(whileStat.getBody());
+                visit(whilestat.getBody());
             } else
                 break;
         }
+    }
+
+    // InterpretVisitor TODO: check for nulls EVERYWHERE (that uses `LanguageType`)
+    @Override
+    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+        // InterpretVisitor TODO: Make Print into its own funtction (un-hard code it)
+        if (funccall.getName().getValue().equals("print")) {
+
+            System.out.println("[print] " + );
+        }
+        visit(functions.get(funccall.getName()));
+        return null;
     }
 }

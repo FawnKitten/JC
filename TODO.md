@@ -13,6 +13,7 @@ Short-Term
   * String Variables
 * printing/logging of some sort
 * Make README.md prettier + more explanation
+* make the AST Nodes/Symbols constant (i.e. no setters)
 
 Features to be added
 --------------------

@@ -49,6 +49,9 @@ public abstract class NodeVisitor {
         } else if (node instanceof WhileStatement) {
             visit((WhileStatement) node);
             return null;
+        } else if (node instanceof FunctionCall) {
+            visit((FunctionCall) node);
+            return null;
         } else
             throw new InvalidNodeTypeException("No valid cast for `node`");
     }
@@ -80,6 +83,9 @@ public abstract class NodeVisitor {
     public abstract void visit(IfStatement ifstat)
             throws InterpretException, SymbolException;
 
-    public abstract void visit(WhileStatement whileStat)
+    public abstract void visit(WhileStatement whilestat)
+            throws InterpretException, SymbolException;
+
+    public abstract LanguageType visit(FunctionCall funccall)
             throws InterpretException, SymbolException;
 }

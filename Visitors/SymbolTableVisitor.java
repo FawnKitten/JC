@@ -1,12 +1,11 @@
 package Visitors;
 
 import ASTNodes.*;
-import Exceptions.InterpretException;
-import Exceptions.RedeclaredSymbolException;
-import Exceptions.SymbolException;
-import Exceptions.SymbolNotTypeException;
+import Exceptions.*;
 import LanguageTypes.LanguageType;
 import Symbols.*;
+
+import java.util.List;
 
 public class SymbolTableVisitor extends NodeVisitor {
     private final ScopedSymbolTable symbolTable = new ScopedSymbolTable();
@@ -30,13 +29,24 @@ public class SymbolTableVisitor extends NodeVisitor {
 
     private void declareBuiltins() {
         try {
-            symbolTable.declare(new TypeSymbol("int"));
-            symbolTable.declare(new TypeSymbol("float"));
-        } catch (RedeclaredSymbolException e) {
+            declareBuiltinTypes();
+            declareBuiltinFuncitons();
+        } catch (SymbolException e) {
             // Should not happen under any circumstances
             // If this happens, the program should panic immediately
             throw new RuntimeException("[SymbolTableVisitor.declareBuiltins] declaration called before the declaration of builtins");
         }
+    }
+
+    private void declareBuiltinTypes() throws RedeclaredSymbolException {
+        symbolTable.declare(new TypeSymbol("int"));
+        symbolTable.declare(new TypeSymbol("float"));
+        symbolTable.declare(new TypeSymbol("String")); // delete when introduce char arrays
+    }
+
+    private void declareBuiltinFuncitons() throws RedeclaredSymbolException, UndefinedSymbolException {
+        TypeSymbol stringType = (TypeSymbol) symbolTable.lookup("String");
+        symbolTable.declare(new FunctionSymbol("printf", List.of(stringType)));
     }
 
     @Override
@@ -119,6 +129,20 @@ public class SymbolTableVisitor extends NodeVisitor {
         symbolTable.enterScope();
         visit(whileStat.getBody());
         symbolTable.exitScope();
+    }
+
+    @Override
+    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+        try {
+            FunctionSymbol function = (FunctionSymbol) symbolTable.lookup(funccall.getName().getValue());
+            for (ASTNode argument :
+                    funccall.getArguments()) {
+                visit(argument);
+            }
+        } catch (ClassCastException e) {
+            throw new CallingNonFunctionException("Attempting to call `" + funccall.getName().getValue() + "` when it is not a function.");
+        }
+        return null;
     }
 
 

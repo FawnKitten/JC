@@ -74,7 +74,13 @@ public class Parser {
         return left;
     }
 
-    // Main.Parser TODO: Implement function `expression` to decide between boolean and numerical expressions
+    private ASTNode expression()
+        throws InvalidSyntaxException, InvalidCharacterException {
+        if (isOfType(currentToken, Token.Type.STRING_CONST))
+            return stringExpression();
+        else
+            return booleanExpression();
+    }
     private ASTNode booleanTerm()
             throws InvalidSyntaxException, InvalidCharacterException {
        ASTNode left = booleanFactor();
@@ -179,15 +185,18 @@ public class Parser {
         if (isOfType(currentToken, Token.Type.DASH, Token.Type.PLUS,
                 Token.Type.LEFT_PAREN, Token.Type.INT_CONST))
             return numericalExpression();
-        else if (isOfType(currentToken, Token.Type.NAME))
+        else if (isOfType(currentToken, Token.Type.NAME)
+                && isOfType(lexer.peekToken(), Token.Type.LEFT_PAREN))
+            return functionCallStatement();
+        else if (isOfType(currentToken, Token.Type.NAME)
+                && isOfType(lexer.peekToken(), Token.Type.EQUALS))
             return assignment();
         else if (isOfType(currentToken, Token.Type.STRING_CONST))
             return stringExpression();
         else if (isOfType(currentToken, Token.Type.KEY_WORD_IF)) {
             if (currentToken.getValue().equals("if")) return ifStatement();
-        } else if (isOfType(currentToken, Token.Type.KEY_WORD_WHILE)) {
+        } else if (isOfType(currentToken, Token.Type.KEY_WORD_WHILE))
             return whileStatement();
-        }
         return new NoOp();
     }
 
@@ -220,10 +229,29 @@ public class Parser {
         return (CompoundStatement) compoundStatements();
     }
 
+    private FunctionCall functionCallStatement()
+            throws InvalidCharacterException, InvalidSyntaxException {
+        Token name = advanceToken(Token.Type.NAME);
+        advanceToken(Token.Type.LEFT_PAREN);
+        ArrayList<ASTNode> arguments = new ArrayList<>();
+        if (!isOfType(currentToken, Token.Type.RIGHT_PAREN)) {
+            arguments.add(expression());
+            while (!isOfType(currentToken, Token.Type.RIGHT_PAREN)) {
+                advanceToken(Token.Type.COMMA);
+                arguments.add(expression());
+            }
+            advanceToken(Token.Type.RIGHT_PAREN);
+        }
+        System.out.println("name of function: " + name);
+        System.out.println("Arguments: " + arguments);
+        return new FunctionCall(name, arguments);
+    }
+
     private ASTNode stringExpression()
             throws  InvalidSyntaxException, InvalidCharacterException {
-        advanceToken(Token.Type.STRING_CONST);
-        return new NoOp();
+        Token token = advanceToken(Token.Type.STRING_CONST);
+        String value = token.getValue();
+        return new StringConstant(token, value);
     }
 
     private Token advanceToken(Token.Type... types)

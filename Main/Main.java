@@ -11,7 +11,7 @@ public class Main {
 
     @SuppressWarnings("CommentedOutCode")
     public static void main(String[] args) {
-        // Main.main TODO: read code from arbitrary file, and add repl option
+        // Main.main TODO: add repl option
         /* Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
@@ -29,6 +29,7 @@ public class Main {
             jc = new Jc(readFromFile(args[0]));
         else
             jc = new Jc(readFromFile("file.c"));
+        jc.setVisitor(new PrintVisitor());
         jc.eval();
     }
 
