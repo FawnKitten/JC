@@ -2,7 +2,6 @@ package Visitors;
 
 import ASTNodes.*;
 import Exceptions.*;
-import LanguageTypes.LanguageType;
 import Symbols.*;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(BinaryOperator binop)
+    public Object visit(BinaryOperator binop)
             throws InterpretException, SymbolException {
         visit(binop.getLeft());
         visit(binop.getRight());
@@ -58,15 +57,15 @@ public class SymbolTableVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(IntegerConstant num)
+    public Object visit(IntegerConstant num)
         { return null; }
 
     @Override
-    public LanguageType visit(FloatConstant num)
+    public Object visit(FloatConstant num)
         { return null; }
 
     @Override
-    public LanguageType visit(UnaryOperator unop)
+    public Object visit(UnaryOperator unop)
             throws InterpretException, SymbolException {
         visit(unop.getNode());
         return null;
@@ -88,7 +87,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(VariableLookup varlo) throws SymbolException {
+    public Object visit(VariableLookup varlo) throws SymbolException {
         String name = varlo.getName();
         // System.out.println("+++ variable looked up " + name);
         VariableSymbol symbol = (VariableSymbol) symbolTable.lookup(name);
@@ -132,7 +131,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+    public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         try {
             FunctionSymbol function = (FunctionSymbol) symbolTable.lookup(funccall.getName().getValue());
             for (ASTNode argument :

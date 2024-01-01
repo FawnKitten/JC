@@ -56,14 +56,14 @@ public abstract class NodeVisitor {
             throw new InvalidNodeTypeException("No valid cast for `node`");
     }
 
-    public abstract LanguageType visit(BinaryOperator binop)
+    public abstract Object visit(BinaryOperator binop)
             throws InterpretException, SymbolException;
 
-    public abstract LanguageType visit(IntegerConstant intconst);
+    public abstract Object visit(IntegerConstant intconst);
 
-    public abstract LanguageType visit(FloatConstant floatconst);
+    public abstract Object visit(FloatConstant floatconst);
 
-    public abstract LanguageType visit(UnaryOperator unpo)
+    public abstract Object visit(UnaryOperator unpo)
             throws InterpretException, SymbolException;
 
     public abstract void visit(CompoundStatement comstat)
@@ -74,7 +74,7 @@ public abstract class NodeVisitor {
     public abstract void visit(VariableAssignment varas)
             throws InterpretException, SymbolException;
 
-    public abstract LanguageType visit(VariableLookup varlo)
+    public abstract Object visit(VariableLookup varlo)
             throws SymbolException;
 
     public abstract void visit(VariableDeclaration vardec)
@@ -86,6 +86,6 @@ public abstract class NodeVisitor {
     public abstract void visit(WhileStatement whilestat)
             throws InterpretException, SymbolException;
 
-    public abstract LanguageType visit(FunctionCall funccall)
+    public abstract Object visit(FunctionCall funccall)
             throws InterpretException, SymbolException;
 }

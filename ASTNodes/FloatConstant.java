@@ -4,7 +4,7 @@ import Main.Token;
 
 public class FloatConstant implements ASTNode {
     private final Token token;
-    private final float value;
+    private final Float value;
 
     public FloatConstant(Token token) {
         this.token = token;
@@ -13,6 +13,6 @@ public class FloatConstant implements ASTNode {
 
     public Token getToken() { return token; }
 
-    public float getValue() { return value; }
+    public Float getValue() { return value; }
 
 }

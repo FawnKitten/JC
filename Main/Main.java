@@ -1,5 +1,6 @@
 package Main;
 
+import Visitors.InterpretVisitor;
 import Visitors.PrintVisitor;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class Main {
             jc = new Jc(readFromFile(args[0]));
         else
             jc = new Jc(readFromFile("file.c"));
-        jc.setVisitor(new PrintVisitor());
+        jc.setVisitor(new InterpretVisitor());
         jc.eval();
     }
 

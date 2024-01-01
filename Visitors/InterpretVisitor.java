@@ -8,7 +8,7 @@ import Symbols.Symbol;
 import java.util.HashMap;
 
 public class InterpretVisitor extends NodeVisitor {
-    final private HashMap<String, LanguageType> variables = new HashMap<>();
+    final private HashMap<String, Object> variables = new HashMap<>();
     final private HashMap<String, ASTNode> functions = new HashMap<>();
 
     public InterpretVisitor() { super(); }
@@ -25,12 +25,12 @@ public class InterpretVisitor extends NodeVisitor {
 
     @SuppressWarnings("CommentedOutCode")
     @Override
-    public LanguageType visit(BinaryOperator binop)
+    public Object visit(BinaryOperator binop)
             throws InterpretException, SymbolException {
-        LanguageInteger one = new LanguageInteger(1);
-        LanguageInteger zero = new LanguageInteger(0);
-        LanguageType left = (LanguageType)visit(binop.getLeft());
-        LanguageType right = (LanguageType)visit(binop.getRight());
+//        Object<Integer> one = new Object<>(1);
+//        Object<Integer> zero = new Object<>(0);
+        Object left = visit(binop.getLeft());
+        Object right = visit(binop.getRight());
         // symbol table should not let undeclared symbols to exist
         // this code is being kept anyway in case of bugs
         // if (left == null) {
@@ -46,43 +46,40 @@ public class InterpretVisitor extends NodeVisitor {
         //             + ".");
         //             // + "(had the value of"")");
         // }
-        int lval = ((LanguageInteger)left).getNumber();
-        int rval = ((LanguageInteger)right).getNumber();
+
         switch (binop.getToken().getType()) {
-            case PLUS: return left.plus(right);
-            case DASH: return left.minus(right);
-            case SLASH: return left.divide(right);
-            case STAR: return left.times(right);
-            case BOOL_EQUALS: return left.equals(right) ? one : zero;
-            case BOOL_GREATER: return left.compareTo(right);
-            case BOOL_LESSER: return right.compareTo(left);
-            case BOOL_AND: return new LanguageInteger(((rval != 0) && (lval != 0)) ? 1 : 0);
-            case BOOL_OR: return new LanguageInteger(((rval != 0) || (lval != 0)) ? 1 : 0);
+            case PLUS: return LanguageType.add(left, right);
+            case DASH: return LanguageType.subtract(left, right);
+            case SLASH: return LanguageType.divide(left, right);
+            case STAR: return LanguageType.multiply(left, right);
+            case BOOL_EQUALS: return LanguageType.equals(left, right);
+            case BOOL_GREATER: return LanguageType.greaterThan(left, right);
+            case BOOL_LESSER: return LanguageType.lessThan(left, right);
+            case BOOL_AND: return LanguageType.and(left, right);
+            case BOOL_OR: return LanguageType.or(left, right);
         }
         throw new RuntimeException("[InterpretVisitor.visit(BinaryOperator)] type not handled");
     }
 
 
     @Override
-    public LanguageType visit(IntegerConstant intconst) {
-        return new LanguageInteger(intconst.getValue());
+    public Object visit(IntegerConstant intconst) {
+        return intconst.getValue();
     }
 
     @Override
-    public LanguageType visit(FloatConstant floatconst) {
-        return new LanguageFloat(floatconst.getValue());
+    public Object visit(FloatConstant floatconst) {
+        return floatconst.getValue();
     }
 
     @Override
-    public LanguageType visit(UnaryOperator unop)
+    public Object visit(UnaryOperator unop)
             throws InterpretException, SymbolException {
-        LanguageInteger zero = new LanguageInteger(0);
-        LanguageInteger one = new LanguageInteger(1);
-        LanguageType value = (LanguageType)visit(unop.getNode());
+        Object value = visit(unop.getNode());
         switch (unop.getToken().getType()) {
-            case PLUS: return zero.plus(value);
-            case DASH: return zero.minus(value);
-            case BOOL_NOT: return ((LanguageInteger) value).getNumber() == 0 ? one : zero;
+            case PLUS: return LanguageType.add(0,  value);
+            case DASH: return LanguageType.subtract(0, value);
+            case BOOL_NOT: return LanguageType.not(value);
         }
         throw new RuntimeException("[InterpretVisitor.visit(UnaryOperator)] type not handled");
     }
@@ -97,7 +94,7 @@ public class InterpretVisitor extends NodeVisitor {
     @Override
     public void visit(VariableAssignment varas)
             throws InterpretException, SymbolException {
-        LanguageType value = (LanguageType)visit(varas.getValue());
+        Object value = visit(varas.getValue());
         String name = varas.getName();
         // System.out.println("*** " + name + " <- " + value.toString());
         // for debuting purposes uncomment
@@ -105,9 +102,9 @@ public class InterpretVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(VariableLookup varlo) {
+    public Object visit(VariableLookup varlo) {
         String name = varlo.getName();
-        @SuppressWarnings("UnnecessaryLocalVariable") LanguageType value = variables.get(name);
+        @SuppressWarnings("UnnecessaryLocalVariable") Object value = variables.get(name);
         // System.out.println("*** " + name + " -> " + value.toString());
         // for debugging purposes uncomment
         return value;
@@ -123,34 +120,25 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
-        if (visit(ifstat.getCondition()) instanceof LanguageInteger condition) {
-            LanguageInteger zero = new LanguageInteger(0);
-            if (!(condition.getNumber() == zero.getNumber())) {
-                visit(ifstat.getBody());
-            } else if (ifstat.getElseBody() != null) {
-                visit(ifstat.getElseBody());
-            }
+        if ((Boolean) visit(ifstat.getCondition())) {
+            visit(ifstat.getBody());
+        } else if (ifstat.getElseBody() != null) {
+            visit(ifstat.getElseBody());
         }
     }
 
     @Override
     public void visit(WhileStatement whilestat) throws InterpretException, SymbolException {
-        LanguageInteger zero = new LanguageInteger(0);
-        while (visit(whilestat.getCondition()) instanceof LanguageInteger condition) {
-            if (!(condition.getNumber() == zero.getNumber())) {
-                visit(whilestat.getBody());
-            } else
-                break;
+        while ((Boolean) visit(whilestat.getCondition())) {
+            visit(whilestat.getBody());
         }
     }
 
-    // InterpretVisitor TODO: check for nulls EVERYWHERE (that uses `LanguageType`)
     @Override
-    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+    public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         // InterpretVisitor TODO: Make Print into its own funtction (un-hard code it)
         if (funccall.getName().getValue().equals("print")) {
-
-            System.out.println("[print] " + );
+            System.out.println("[print] " + funccall.getName().getValue());
         }
         visit(functions.get(funccall.getName()));
         return null;

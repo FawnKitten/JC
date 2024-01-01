@@ -3,7 +3,6 @@ package Visitors;
 import ASTNodes.*;
 import Exceptions.InterpretException;
 import Exceptions.SymbolException;
-import LanguageTypes.LanguageType;
 
 public class PrintVisitor extends NodeVisitor {
     private int indentation;
@@ -14,7 +13,7 @@ public class PrintVisitor extends NodeVisitor {
     public PrintVisitor() { super(); }
 
     @Override
-    public LanguageType visit(BinaryOperator binop)
+    public Object visit(BinaryOperator binop)
         throws InterpretException, SymbolException {
         print("BinaryOperation<" + binop.getToken().getValue() + ">(");
         indentation++;
@@ -27,19 +26,19 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(IntegerConstant intconst) {
+    public Object visit(IntegerConstant intconst) {
         print("IntegerConstant(" + intconst.getToken().getValue() + ")");
         return null;
     }
 
     @Override
-    public LanguageType visit(FloatConstant floatconst) {
+    public Object visit(FloatConstant floatconst) {
         print("FloatConstant(" + floatconst.getToken().getValue() + ")");
         return null;
     }
 
     @Override
-    public LanguageType visit(UnaryOperator unop)
+    public Object visit(UnaryOperator unop)
         throws InterpretException, SymbolException {
         print("UnaryOperator<" + unop.getToken().getValue() + ">(");
         indentation++;
@@ -77,7 +76,7 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(VariableLookup varlo) {
+    public Object visit(VariableLookup varlo) {
         print("VariableLookup<" + varlo.getName() + ">()");
         return null;
     }
@@ -115,7 +114,7 @@ public class PrintVisitor extends NodeVisitor {
     }
 
     @Override
-    public LanguageType visit(FunctionCall funccall) throws InterpretException, SymbolException {
+    public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         print("FunctionCall<" + funccall.getName().getValue() + ">(");
         indentation++;
         for (ASTNode arg : funccall.getArguments())
