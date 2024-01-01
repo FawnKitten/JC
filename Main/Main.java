@@ -31,6 +31,8 @@ public class Main {
         else
             jc = new Jc(readFromFile("file.c"));
         jc.setVisitor(new InterpretVisitor());
+//        jc.setVisitor(new PrintVisitor());
+
         jc.eval();
     }
 

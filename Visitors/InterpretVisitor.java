@@ -1,11 +1,10 @@
 package Visitors;
 
 import Exceptions.*;
-import LanguageTypes.*;
 import ASTNodes.*;
-import Symbols.Symbol;
+import Main.LanguageType;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class InterpretVisitor extends NodeVisitor {
     final private HashMap<String, Object> variables = new HashMap<>();
@@ -27,8 +26,6 @@ public class InterpretVisitor extends NodeVisitor {
     @Override
     public Object visit(BinaryOperator binop)
             throws InterpretException, SymbolException {
-//        Object<Integer> one = new Object<>(1);
-//        Object<Integer> zero = new Object<>(0);
         Object left = visit(binop.getLeft());
         Object right = visit(binop.getRight());
         // symbol table should not let undeclared symbols to exist
@@ -120,7 +117,9 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
-        if ((Boolean) visit(ifstat.getCondition())) {
+        Object condition = visit(ifstat.getCondition());
+        if (condition instanceof Integer) condition = !condition.equals(0);
+        if ((Boolean) condition) {
             visit(ifstat.getBody());
         } else if (ifstat.getElseBody() != null) {
             visit(ifstat.getElseBody());
@@ -129,18 +128,42 @@ public class InterpretVisitor extends NodeVisitor {
 
     @Override
     public void visit(WhileStatement whilestat) throws InterpretException, SymbolException {
-        while ((Boolean) visit(whilestat.getCondition())) {
+        Object condition = visit(whilestat.getCondition());
+        if (condition instanceof Integer) condition = !condition.equals(0);
+        while ((Boolean) condition) {
             visit(whilestat.getBody());
+            condition = visit(whilestat.getCondition());
+            if (condition instanceof Integer) condition = !condition.equals(0);
         }
     }
 
     @Override
     public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         // InterpretVisitor TODO: Make Print into its own funtction (un-hard code it)
-        if (funccall.getName().getValue().equals("print")) {
-            System.out.println("[print] " + funccall.getName().getValue());
+        if (funccall.getName().getValue().equals("printf")) {
+            String message = ((StringConstant) funccall.getArguments().get(0)).getValue();
+            List<ASTNode> formatArgs = funccall.getArguments().subList(1, funccall.getArguments().size());
+            List<Object> formatArgsValues = new ArrayList<>();
+            for (ASTNode arg : formatArgs) {
+                formatArgsValues.add(visit(arg));
+            }
+            System.out.println("[printf] " + message.formatted(formatArgsValues.toArray()));
+        } else if (funccall.getName().getValue().equals("DEBUG")) {
+            System.out.print("[debug]");
+            for (ASTNode arg : funccall.getArguments()) {
+                if (arg instanceof VariableLookup) {
+                    String name = ((VariableLookup) arg).getName();
+                    System.out.print(" " + name + "=" + variables.get(name).toString());
+                }
+            }
+            System.out.println();
         }
-        visit(functions.get(funccall.getName()));
         return null;
     }
+
+    @Override
+    public Object visit(StringConstant strconst) throws InterpretException, SymbolException {
+        return strconst.getValue();
+    }
+
 }

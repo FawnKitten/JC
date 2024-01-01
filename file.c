@@ -1,18 +1,14 @@
 
 {
     // parse simple function
-    int x;
-    float y;
-    x = 1 + 3;
-    y = 1.3 * (x / 2);
-
-    if  (x == 4) {
-        y = 1.0;
-    }
-
+    int x, y, z;
+    x = 4;
+    y = 1;
+    z = 556;
     while (x > 0) {
-        y = y + 1;
+        printf("loop %d", y);
         x = x - 1;
+        y = y + 1;
+        DEBUG(x, y);
     }
-    /// complicatedFunction(a, b + c, TRUE || (3 + 4 > 5), "Some function parameter");
 }

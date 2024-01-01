@@ -124,6 +124,12 @@ public class PrintVisitor extends NodeVisitor {
         return null;
     }
 
+    @Override
+    public Object visit(StringConstant strconst) throws InterpretException, SymbolException {
+        print("StringConstant(" + strconst.getValue() + ")");
+        return null;
+    }
+
 
     private String pad(int num) {
         return "-".repeat(Math.max(0, num));

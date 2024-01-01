@@ -1,4 +1,4 @@
-package LanguageTypes;
+package Main;
 
 import Exceptions.InterpretException;
 import Exceptions.UncaughtInvalidOperation;
@@ -89,18 +89,8 @@ public class LanguageType {
         throw new UncaughtInvalidOperation("[ERROR] Unhandled operation: lessThan between `" + a.getClass().getName() + "' and `" + b.getClass().getName() + "'");
     }
 
-    public static Object equals(Object a, Object b) throws InterpretException {
-        if (a instanceof Integer && b instanceof Integer)
-            return a.equals(b);
-        else if (a instanceof Float || b instanceof Float) {
-            try {
-                return ((Number) a).floatValue() == ((Number) b).floatValue();
-            } catch (ClassCastException e) {
-                // FATAL ERROR (Should be caught by Semantic Analysis)
-                throw new UncaughtInvalidOperation("[FATAL ERROR] lessThan operation not supported between `Float' and non-number type");
-            }
-        }
-        throw new UncaughtInvalidOperation("[ERROR] Unhandled operation: equals between `" + a.getClass().getName() + "' and `" + b.getClass().getName() + "'");
+    public static Object equals(Object a, Object b) {
+        return a.equals(b);
     }
 
     public static Object and(Object a, Object b) throws InterpretException {

@@ -29,11 +29,11 @@ public class SymbolTableVisitor extends NodeVisitor {
     private void declareBuiltins() {
         try {
             declareBuiltinTypes();
-            declareBuiltinFuncitons();
+            declareBuiltinFunctions();
         } catch (SymbolException e) {
             // Should not happen under any circumstances
             // If this happens, the program should panic immediately
-            throw new RuntimeException("[SymbolTableVisitor.declareBuiltins] declaration called before the declaration of builtins");
+            throw new RuntimeException("[declareBuiltinFunctions.declareBuiltins] declaration called before the declaration of builtins");
         }
     }
 
@@ -43,9 +43,10 @@ public class SymbolTableVisitor extends NodeVisitor {
         symbolTable.declare(new TypeSymbol("String")); // delete when introduce char arrays
     }
 
-    private void declareBuiltinFuncitons() throws RedeclaredSymbolException, UndefinedSymbolException {
+    private void declareBuiltinFunctions() throws RedeclaredSymbolException, UndefinedSymbolException {
         TypeSymbol stringType = (TypeSymbol) symbolTable.lookup("String");
         symbolTable.declare(new FunctionSymbol("printf", List.of(stringType)));
+        symbolTable.declare(new FunctionSymbol("DEBUG", List.of(stringType)));
     }
 
     @Override
@@ -141,6 +142,11 @@ public class SymbolTableVisitor extends NodeVisitor {
         } catch (ClassCastException e) {
             throw new CallingNonFunctionException("Attempting to call `" + funccall.getName().getValue() + "` when it is not a function.");
         }
+        return null;
+    }
+
+    @Override
+    public Object visit(StringConstant strconst) throws InterpretException, SymbolException {
         return null;
     }
 

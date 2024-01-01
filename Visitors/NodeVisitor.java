@@ -1,8 +1,9 @@
 package Visitors;
 
-import Exceptions.*;
 import ASTNodes.*;
-import LanguageTypes.*;
+import Exceptions.InterpretException;
+import Exceptions.InvalidNodeTypeException;
+import Exceptions.SymbolException;
 
 public abstract class NodeVisitor {
 
@@ -52,8 +53,10 @@ public abstract class NodeVisitor {
         } else if (node instanceof FunctionCall) {
             visit((FunctionCall) node);
             return null;
+        } else if (node instanceof StringConstant) {
+            return visit((StringConstant) node);
         } else
-            throw new InvalidNodeTypeException("No valid cast for `node`");
+            throw new InvalidNodeTypeException("No valid cast for `" + node.getClass().getName() + "'");
     }
 
     public abstract Object visit(BinaryOperator binop)
@@ -87,5 +90,8 @@ public abstract class NodeVisitor {
             throws InterpretException, SymbolException;
 
     public abstract Object visit(FunctionCall funccall)
+            throws InterpretException, SymbolException;
+
+    public abstract Object visit(StringConstant strconst)
             throws InterpretException, SymbolException;
 }
