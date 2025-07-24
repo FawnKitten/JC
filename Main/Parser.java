@@ -32,26 +32,42 @@ public class Parser {
     private ArrayList<ASTNode> declarations()
             throws InvalidSyntaxException, InvalidCharacterException {
         ArrayList<ASTNode> vardecs = new ArrayList<>();
-        while (currentToken.getType() == Token.Type.NAME && lexer.peekToken().getType() == Token.Type.NAME) {
+        while (currentToken.getType() == Token.Type.NAME
+            && lexer.peekToken().getType() == Token.Type.NAME) {
             Token type = advanceToken(Token.Type.NAME);
             if (type.getValue().equals("void"))
                 throw new InvalidSyntaxException("`void` is not a valid variable type");
-            vardecs.addAll(variableDeclaration(type));
+            vardecs.addAll(variableAndArrayDeclarations(type));
             advanceToken(Token.Type.SEMI_COLON);
         }
         return vardecs;
     }
 
-    private ArrayList<ASTNode> variableDeclaration(Token type)
+    private ArrayList<ASTNode> variableAndArrayDeclarations(Token type)
             throws InvalidSyntaxException, InvalidCharacterException {
         // Main.Parser TODO: add behaviour for initialization
-        ArrayList<ASTNode> vars = new ArrayList<>();
+        var vars = new ArrayList<ASTNode>();
         Token name = advanceToken(Token.Type.NAME);
-        vars.add(new VariableDeclaration(name, type));
+        if (currentToken.getType() == Token.Type.LEFT_BRACKET) {
+            advanceToken(Token.Type.LEFT_BRACKET);
+            Token size = advanceToken(Token.Type.INT_CONST);
+            advanceToken(Token.Type.RIGHT_BRACKET);
+            vars.add(new ArrayDeclaration(name, type, size));
+        } else {
+            vars.add(new VariableDeclaration(name, type));
+        }
         while (currentToken.getType() == Token.Type.COMMA) {
             advanceToken(Token.Type.COMMA);
             name = advanceToken(Token.Type.NAME);
-            vars.add(new VariableDeclaration(name, type));
+            if (currentToken.getType() == Token.Type.LEFT_BRACKET) {
+                advanceToken(Token.Type.LEFT_BRACKET);
+                Token size = advanceToken(Token.Type.INT_CONST);
+                advanceToken(Token.Type.RIGHT_BRACKET);
+                vars.add(new ArrayDeclaration(name, type, size));
+            } else {
+                advanceToken(Token.Type.COMMA);
+                vars.add(new VariableDeclaration(name, type));
+            }
         }
         return vars;
     }
@@ -150,6 +166,12 @@ public class Parser {
             ASTNode node = booleanExpression();
             advanceToken(Token.Type.RIGHT_PAREN);
             return node;
+        } else if (tok.getType() == Token.Type.NAME
+                && currentToken.getType() == Token.Type.LEFT_BRACKET) {
+            advanceToken(Token.Type.LEFT_BRACKET);
+            ASTNode index = numericalExpression();
+            advanceToken(Token.Type.RIGHT_BRACKET);
+            return new ArrayLookup(tok, index);
         } else if (tok.getType() == Token.Type.NAME) {
             return new VariableLookup(tok);
         } else {
@@ -168,12 +190,12 @@ public class Parser {
     private ASTNode compoundStatements()
             throws InvalidSyntaxException, InvalidCharacterException {
         advanceToken(Token.Type.LEFT_CURLY);
-        CompoundStatement comstat = new CompoundStatement();
+        var comstat = new CompoundStatement();
         ArrayList<ASTNode> decs = declarations();
         comstat.addMultipleStatements(decs);
         while (currentToken.getType() != Token.Type.RIGHT_CURLY) {
             comstat.addStatement(statement());
-            if (!isBlockStatement(comstat.getStatements().get(comstat.getStatements().size()-1)))
+            if (!isBlockStatement(comstat.getStatements().getLast()))
                 advanceToken(Token.Type.SEMI_COLON); // no need for semicolon after block statements
         }
         advanceToken(Token.Type.RIGHT_CURLY);
@@ -191,6 +213,9 @@ public class Parser {
         else if (isOfType(currentToken, Token.Type.NAME)
                 && isOfType(lexer.peekToken(), Token.Type.EQUALS))
             return assignment();
+        else if (isOfType(currentToken, Token.Type.NAME)
+                && isOfType(lexer.peekToken(), Token.Type.LEFT_BRACKET))
+            return arrayAssignment();
         else if (isOfType(currentToken, Token.Type.STRING_CONST))
             return stringExpression();
         else if (isOfType(currentToken, Token.Type.KEY_WORD_IF)) {
@@ -198,6 +223,16 @@ public class Parser {
         } else if (isOfType(currentToken, Token.Type.KEY_WORD_WHILE))
             return whileStatement();
         return new NoOp();
+    }
+
+    private ASTNode arrayAssignment() throws InvalidCharacterException, InvalidSyntaxException {
+        var name = advanceToken(Token.Type.NAME);
+        advanceToken(Token.Type.LEFT_BRACKET);
+        var index = numericalExpression();
+        advanceToken(Token.Type.RIGHT_BRACKET);
+        advanceToken(Token.Type.EQUALS);
+        var value = expression();
+        return new ArrayAssignment(name, index, value);
     }
 
     private ASTNode whileStatement()

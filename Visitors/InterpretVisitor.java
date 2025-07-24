@@ -44,18 +44,19 @@ public class InterpretVisitor extends NodeVisitor {
         //             // + "(had the value of"")");
         // }
 
-        switch (binop.getToken().getType()) {
-            case PLUS: return LanguageType.add(left, right);
-            case DASH: return LanguageType.subtract(left, right);
-            case SLASH: return LanguageType.divide(left, right);
-            case STAR: return LanguageType.multiply(left, right);
-            case BOOL_EQUALS: return LanguageType.equals(left, right);
-            case BOOL_GREATER: return LanguageType.greaterThan(left, right);
-            case BOOL_LESSER: return LanguageType.lessThan(left, right);
-            case BOOL_AND: return LanguageType.and(left, right);
-            case BOOL_OR: return LanguageType.or(left, right);
-        }
-        throw new RuntimeException("[InterpretVisitor.visit(BinaryOperator)] type not handled");
+        return switch (binop.getToken().getType()) {
+            case PLUS -> LanguageType.add(left, right);
+            case DASH -> LanguageType.subtract(left, right);
+            case SLASH -> LanguageType.divide(left, right);
+            case STAR -> LanguageType.multiply(left, right);
+            case BOOL_EQUALS -> LanguageType.equals(left, right);
+            case BOOL_GREATER -> LanguageType.greaterThan(left, right);
+            case BOOL_LESSER -> LanguageType.lessThan(left, right);
+            case BOOL_AND -> LanguageType.and(left, right);
+            case BOOL_OR -> LanguageType.or(left, right);
+            default ->
+                    throw new RuntimeException("[InterpretVisitor.visit(BinaryOperator)] type not handled");
+        };
     }
 
 
@@ -73,12 +74,13 @@ public class InterpretVisitor extends NodeVisitor {
     public Object visit(UnaryOperator unop)
             throws InterpretException, SymbolException {
         Object value = visit(unop.getNode());
-        switch (unop.getToken().getType()) {
-            case PLUS: return LanguageType.add(0,  value);
-            case DASH: return LanguageType.subtract(0, value);
-            case BOOL_NOT: return LanguageType.not(value);
-        }
-        throw new RuntimeException("[InterpretVisitor.visit(UnaryOperator)] type not handled");
+        return switch (unop.getToken().getType()) {
+            case PLUS -> LanguageType.add(0, value);
+            case DASH -> LanguageType.subtract(0, value);
+            case BOOL_NOT -> LanguageType.not(value);
+            default ->
+                    throw new RuntimeException("[InterpretVisitor.visit(UnaryOperator)] type not handled");
+        };
     }
 
     @Override
@@ -116,6 +118,45 @@ public class InterpretVisitor extends NodeVisitor {
     }
 
     @Override
+    public void visit(ArrayDeclaration arrdec) throws SymbolException {
+        String name = arrdec.getName().getValue();
+        variables.put(name, Arrays.asList(new Object[arrdec.getSize()]));
+    }
+
+    @Override
+    public void visit(ArrayAssignment arras) throws SymbolException, InterpretException {
+        Object obj = variables.get(arras.getName().getValue());
+        if (obj instanceof List<?>) {
+            @SuppressWarnings("unchecked") var arr = (List<Object>) obj;
+            // checked by Symbol checker (hopefully)
+            arr.set((Integer) visit(arras.getIndex()), visit(arras.getValue()));
+        } else {
+            throw new InterpretException("Assignment of index of non-array variable `"
+                    + arras.getName().getValue() + "'");
+        }
+    }
+
+    @Override
+    public Object visit(ArrayLookup arrlo) throws SymbolException, InterpretException {
+        Object obj = variables.get(arrlo.getName().getValue());
+        if (obj instanceof List<?>) {
+            @SuppressWarnings("unchecked") var arr = (List<Object>) obj;
+            Object index = visit(arrlo.getIndex());
+            if (!(index instanceof Integer))
+                throw new InterpretException("Attempt to access array `"
+                        + arrlo.getName().getValue() + "' at non-integer index `" + index + "'");
+            if (((Integer) index) < arr.size()) {
+                return arr.get(((Integer) index));
+            }
+            throw new InterpretException("Accessing array `" + arrlo.getName().getValue()
+                    + "' out of bounds at index=" + index);
+        } else {
+            throw new InterpretException("Assignment of index of non-array variable `"
+                    + arrlo.getName().getValue() + "'");
+        }
+    }
+
+    @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
         Object condition = visit(ifstat.getCondition());
         if (condition instanceof Integer) condition = !condition.equals(0);
@@ -141,7 +182,7 @@ public class InterpretVisitor extends NodeVisitor {
     public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         // InterpretVisitor TODO: Make Print into its own funtction (un-hard code it)
         if (funccall.getName().getValue().equals("printf")) {
-            String message = ((StringConstant) funccall.getArguments().get(0)).getValue();
+            String message = ((StringConstant) funccall.getArguments().getFirst()).getValue();
             List<ASTNode> formatArgs = funccall.getArguments().subList(1, funccall.getArguments().size());
             List<Object> formatArgsValues = new ArrayList<>();
             for (ASTNode arg : formatArgs) {

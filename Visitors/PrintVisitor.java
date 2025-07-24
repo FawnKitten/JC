@@ -87,7 +87,34 @@ public class PrintVisitor extends NodeVisitor {
                + ", " + vardec.getType().getValue() + ">()");
    }
 
-   @Override
+    @Override
+    public void visit(ArrayDeclaration arrdec) throws SymbolException {
+        print("ArrayDeclaration<" + arrdec.getName().getValue()
+                + ", " + arrdec.getCollectionType().getValue()
+                + ", " + arrdec.getSize() + ">()");
+    }
+
+    @Override
+    public void visit(ArrayAssignment arras) throws SymbolException, InterpretException {
+        print("ArrayAssignment<" + arras.getName().getValue() + ">(");
+        indentation++;
+        visit(arras.getIndex());
+        visit(arras.getValue());
+        indentation--;
+        print(")");
+    }
+
+    @Override
+    public Object visit(ArrayLookup arrlo) throws SymbolException, InterpretException {
+        print("ArrayLookup<" + arrlo.getName().getValue() + ">(");
+        indentation++;
+        visit(arrlo.getIndex());
+        indentation--;
+        print(")");
+        return null;
+    }
+
+    @Override
    public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
         print("IfStatement( Condition:");
         indentation++;

@@ -14,6 +14,7 @@ Short-Term
 * printing/logging of some sort
 * Make README.md prettier + more explanation
 * make the AST Nodes/Symbols constant (i.e. no setters)
+* replace getName() functionality in variable nodes to getToken()
 
 Features to be added
 --------------------

@@ -82,7 +82,6 @@ public class SymbolTableVisitor extends NodeVisitor {
     @Override
     public void visit(VariableAssignment varas)
             throws InterpretException, SymbolException {
-        // System.out.println("*** variable assigned " + varas.getName());
         symbolTable.define(varas.getName());
         visit(varas.getValue());
     }
@@ -111,6 +110,38 @@ public class SymbolTableVisitor extends NodeVisitor {
     }
 
     @Override
+    public void visit(ArrayDeclaration arrdec) throws SymbolException {
+        Symbol typeSymbol = symbolTable.lookup(arrdec.getCollectionType().getValue());
+        try {
+            TypeSymbol type = (TypeSymbol) typeSymbol;
+            symbolTable.declare(new ArraySymbol(arrdec.getName().getValue(), type, arrdec.getSize()));
+        } catch (ClassCastException e) {
+            invalidTypeException(arrdec.getName().getValue(), typeSymbol.getName());
+        }
+    }
+
+    @Override
+    public void visit(ArrayAssignment arras) throws SymbolException, InterpretException {
+        if (symbolTable.lookup(arras.getName().getValue()) instanceof ArraySymbol) {
+            visit(arras.getValue());
+        } else {
+            throw new SymbolException("Attempt at indexing non-array symbol `"
+                    + arras.getName().getValue() + "'");
+        }
+    }
+
+    @Override
+    public Object visit(ArrayLookup arrlo) throws SymbolException, InterpretException {
+        if (symbolTable.lookup(arrlo.getName().getValue()) instanceof ArraySymbol) {
+            visit(arrlo.getIndex());
+        } else {
+            throw new SymbolException("Attempt at indexing non-array symbol `"
+                    + arrlo.getName().getValue() + "'");
+        }
+        return null;
+    }
+
+    @Override
     public void visit(IfStatement ifstat) throws InterpretException, SymbolException {
         visit(ifstat.getCondition());
         symbolTable.enterScope();
@@ -135,8 +166,7 @@ public class SymbolTableVisitor extends NodeVisitor {
     public Object visit(FunctionCall funccall) throws InterpretException, SymbolException {
         try {
             FunctionSymbol function = (FunctionSymbol) symbolTable.lookup(funccall.getName().getValue());
-            for (ASTNode argument :
-                    funccall.getArguments()) {
+            for (ASTNode argument : funccall.getArguments()) {
                 visit(argument);
             }
         } catch (ClassCastException e) {

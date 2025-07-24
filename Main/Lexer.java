@@ -67,13 +67,13 @@ public class Lexer {
             } else if (text.getCurrentChar() == ')') {
                 text.advancePosition();
                 return new Token(")", Token.Type.RIGHT_PAREN);
-            } /* else if (text.getCurrentChar() == '[') {
+            } else if (text.getCurrentChar() == '[') {
                 text.advancePosition();
-                return new Main.Token("[", Main.Token.Type.LEFT_BRACKET);
+                return new Token("[", Token.Type.LEFT_BRACKET);
             } else if (text.getCurrentChar() == ']') {
                 text.advancePosition();
-                return new Main.Token("]", Main.Token.Type.RIGHT_BRACKET);
-            } */ else if (text.getCurrentChar() == '{') {
+                return new Token("]", Token.Type.RIGHT_BRACKET);
+            } else if (text.getCurrentChar() == '{') {
                 text.advancePosition();
                 return new Token("{", Token.Type.LEFT_CURLY);
             } else if (text.getCurrentChar() == '}') {
@@ -149,12 +149,13 @@ public class Lexer {
 
     public Token nextIdentifier() {
         StringBuilder res = new StringBuilder();
-        while (Character.isAlphabetic(text.getCurrentChar()) || text.getCurrentChar() == '_') {
+        while (Character.isAlphabetic(text.getCurrentChar()) || text.getCurrentChar() == '_'
+                || Character.isDigit(text.getCurrentChar())) {
             res.append(text.getCurrentChar());
             text.advancePosition();
         }
         for (String keyWord : keyWords) {
-            if (keyWord.equals(res.toString()))
+            if (keyWord.contentEquals(res))
                 return new Token(res.toString(), Token.Type.valueOf("KEY_WORD_" + res.toString().toUpperCase()));
         }
         return new Token(res.toString(), Token.Type.NAME);

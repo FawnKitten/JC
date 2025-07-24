@@ -1,14 +1,13 @@
 
 {
-    // parse simple function
-    int x, y, z;
-    x = 4;
-    y = 1;
-    z = 556;
-    while (x > 0) {
-        printf("loop %d", y);
-        x = x - 1;
-        y = y + 1;
-        DEBUG(x, y);
+    int a, arr[5];
+    a = 0;
+
+    while (a < 5) {
+        arr[a] = a * 3;
+        a = a + 1;
     }
+
+    printf("arr[2]=%d", arr[2]);
+    a = arr[2];
 }

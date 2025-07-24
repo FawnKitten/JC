@@ -55,8 +55,16 @@ public abstract class NodeVisitor {
             return null;
         } else if (node instanceof StringConstant) {
             return visit((StringConstant) node);
-        } else
-            throw new InvalidNodeTypeException("No valid cast for `" + node.getClass().getName() + "'");
+        } else if (node instanceof ArrayDeclaration) {
+            visit((ArrayDeclaration) node);
+            return null;
+        } else if (node instanceof ArrayAssignment) {
+            visit((ArrayAssignment) node);
+            return null;
+        } else if (node instanceof ArrayLookup) {
+            return visit((ArrayLookup) node);
+        }
+        throw new InvalidNodeTypeException("No valid cast for `" + node.getClass().getName() + "'");
     }
 
     public abstract Object visit(BinaryOperator binop)
@@ -82,6 +90,15 @@ public abstract class NodeVisitor {
 
     public abstract void visit(VariableDeclaration vardec)
             throws SymbolException;
+
+    public abstract void visit(ArrayDeclaration arrdec)
+            throws SymbolException;
+
+    public abstract void visit(ArrayAssignment arrdec)
+            throws SymbolException, InterpretException;
+
+    public abstract Object visit(ArrayLookup arrlo)
+            throws SymbolException, InterpretException;
 
     public abstract void visit(IfStatement ifstat)
             throws InterpretException, SymbolException;

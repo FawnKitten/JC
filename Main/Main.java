@@ -1,7 +1,6 @@
 package Main;
 
 import Visitors.InterpretVisitor;
-import Visitors.PrintVisitor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,8 +30,6 @@ public class Main {
         else
             jc = new Jc(readFromFile("file.c"));
         jc.setVisitor(new InterpretVisitor());
-//        jc.setVisitor(new PrintVisitor());
-
         jc.eval();
     }
 
